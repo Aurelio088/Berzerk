@@ -21,6 +21,11 @@ The quest revolves around the player's survival in a maze-like structure infeste
 
 The main character is a soldier wearing a uniform and carrying a gun. As the character progresses, it evolves, gaining access to a super weapon that changes the dynamics of battles. Players experience the soldier's journey in a third-person perspective.
 
+### Sketch of Main Character
+
+![Sketch of Main Character](https://github.com/Aurelio088/Berzerk/blob/main/img/sketch_Soldier.png)
+
+
 ### Opponents
 
 Robots of various shapes and sizes are the main opponents. They shoot bullets in the player's direction, becoming faster and deadlier as the game progresses.
