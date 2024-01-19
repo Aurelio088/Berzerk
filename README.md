@@ -30,13 +30,23 @@ The main character is a soldier wearing a uniform and carrying a gun. As the cha
 
 Robots of various shapes and sizes are the main opponents. They shoot bullets in the player's direction, becoming faster and deadlier as the game progresses.
 
+### Sketch of Opponents
+
+![Sketch of Opponents](https://github.com/Aurelio088/Berzerk/blob/main/img/Sketchs.png)
+
 ### Environment
 
 Berzerk's environment features scenes with different mazes. The maze starts on the left and goes to the right, composed of walls that players navigate. The visuals are simple, respecting a classic arcade vibe, with the maze changing patterns according to the scenes.
 
+### Sketch of World
+
+![Sketch of World](https://github.com/Aurelio088/Berzerk/blob/main/img/sketch_background.png)
+
 ### Menu
 
 The game menu includes a bold title "Berzerk" and buttons for "Start Game," "Credits," and "Exit Game."
+
+![Sketch of Menu](https://github.com/Aurelio088/Berzerk/blob/main/img/Berzerk%20Sketch%20Menu.png)
 
 ### Controls
 
