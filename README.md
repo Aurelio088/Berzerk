@@ -39,6 +39,8 @@ Berzerk's environment features scenes with different mazes. The maze starts on t
 
 ![Sketch of World](https://github.com/Aurelio088/Berzerk/blob/main/img/sketch_background.png)
 
+![Sketch of World 2](https://github.com/Aurelio088/Berzerk/blob/main/img/sketch_background2.png)
+
 ### Menu
 
 The game menu includes a bold title "Berzerk" and buttons for "Start Game," "Credits," and "Exit Game."
