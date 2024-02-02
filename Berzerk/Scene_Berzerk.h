@@ -27,10 +27,6 @@ private:
 
 	sf::Font        m_font;										// Added by Aurelio Rodrigues
 
-	sf::Clock		gapTimer;									// Added by Aurelio Rodrigues
-	sf::Clock		bugIconTimer;								// Added by Aurelio Rodrigues
-	sf::Time		bugIconDuration = sf::seconds(5.0f);		// Added by Aurelio Rodrigues
-
 	bool			m_drawTextures{ true };
 	bool			m_drawAABB{ false };
 	bool			m_drawGrid{ false };
@@ -56,33 +52,15 @@ private:
 	void	        registerActions();
 	void            spawnPlayer(sf::Vector2f pos);
 
-	void            spawnLane1();								// Added by Aurelio Rodrigues
-	void            spawnLane2(); 								// Added by Aurelio Rodrigues
-	void            spawnLane3(); 								// Added by Aurelio Rodrigues
-	void            spawnLane4(); 								// Added by Aurelio Rodrigues
-	void            spawnLane5(); 								// Added by Aurelio Rodrigues
-	void            spawnLane6(); 								// Added by Aurelio Rodrigues
-	void            spawnLane7(); 								// Added by Aurelio Rodrigues
-	void            spawnLane8(); 								// Added by Aurelio Rodrigues
-	void            spawnLane9(); 								// Added by Aurelio Rodrigues
-	void            spawnLane10(); 								// Added by Aurelio Rodrigues
-	void            spawnLane11(); 								// Added by Aurelio Rodrigues
-	void            spawnBugIcon(); 							// Added by Aurelio Rodrigues
 
 	// Adicionado por mim
 	void            updateScoreText(); 							// Added by Aurelio Rodrigues
 	void            updateLivesText(); 							// Added by Aurelio Rodrigues
 	void            winningMessage(); 							// Added by Aurelio Rodrigues
 
-	void 		    handleCarCollision(std::shared_ptr<Entity> e);
-	void 		    handleTractorCollision(std::shared_ptr<Entity> e);
-
-	void 		    handleRaceCarCollision(std::shared_ptr<Entity> e);
-
 	void 		    respawnPlayer();
 	void 		    onPlayerCollision(); 						// Added by Aurelio Rodrigues
-	void		    onPlayerCollisionDrive(); 					// Added by Aurelio Rodrigues
-	void		    onPlayerCollisionLillyPad(); 				// Added by Aurelio Rodrigues
+
 	bool 		    checkCollision(Entity& entity1, Entity& entity2); // Added by Aurelio Rodrigues
 
 

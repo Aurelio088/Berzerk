@@ -1,6 +1,7 @@
 #include "Scene_Menu.h"
 #include "Scene_Berzerk.h"
 #include <memory>
+#include "MusicPlayer.h"
 
 void Scene_Menu::onEnd()
 {
@@ -11,6 +12,8 @@ Scene_Menu::Scene_Menu(GameEngine* gameEngine)
 	: Scene(gameEngine)
 {
 	init();
+	MusicPlayer::getInstance().play("menuTheme");
+	MusicPlayer::getInstance().setVolume(50);
 }
 
 

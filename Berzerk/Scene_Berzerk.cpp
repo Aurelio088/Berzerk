@@ -29,41 +29,14 @@ Scene_Berzerk::Scene_Berzerk(GameEngine* gameEngine, const std::string& levelPat
 	auto pos = m_worldView.getSize();
 
 	// spawn frog in middle of first row
-	pos.x = pos.x / 2.f;
-	pos.y -= 20.f;
+	pos.x = 0.f - 20.f;
+	pos.y -= 600.f - 260.f;
 
-	// spawn cars
-	spawnLane1();
-	spawnLane2();
-	spawnLane3();
-	spawnLane4();
-	spawnLane5();
-	spawnLane6();
-	spawnLane7();
-	spawnLane8();
-	spawnLane9();
-	spawnLane10();
-	spawnLane11();
-	spawnBugIcon();
 
 	spawnPlayer(pos);
 
 	MusicPlayer::getInstance().play("gameTheme");
 	MusicPlayer::getInstance().setVolume(50);
-
-	m_laneCrossed["lane1"] = false;
-	m_laneCrossed["lane2"] = false;
-	m_laneCrossed["lane3"] = false;
-	m_laneCrossed["lane4"] = false;
-	m_laneCrossed["lane5"] = false;
-	m_laneCrossed["lane6"] = false;
-	m_laneCrossed["lane7"] = false;
-	m_laneCrossed["lane8"] = false;
-	m_laneCrossed["lane9"] = false;
-	m_laneCrossed["lane10"] = false;
-
-	// Variable to initialize the amount of lilly pads occupied
-	m_lillyPadsOccupied = 0;
 
 }
 
@@ -135,21 +108,21 @@ void Scene_Berzerk::playerMovement() {
 
 	if (dir & CInput::UP) {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("up"));
-		pos.y -= 40.f;
+		pos.y -= 5.f;
 	}
 	if (dir & CInput::DOWN) {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("down"));
-		pos.y += 40.f;
+		pos.y += 5.f;
 	}
 
 	if (dir & CInput::LEFT) {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left"));
-		pos.x -= 40.f;
+		pos.x -= 5.f;
 	}
 
 	if (dir & CInput::RIGHT) {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
-		pos.x += 40.f;
+		pos.x += 5.f;
 	}
 
 	if (dir != 0) {
@@ -197,10 +170,10 @@ void Scene_Berzerk::sRender() {
 	}
 
 	// draw score
-	m_game->window().draw(m_scoreText);
+	//m_game->window().draw(m_scoreText);
 
 	// draw lives
-	m_game->window().draw(m_livesText);
+	//m_game->window().draw(m_livesText);
 
 	// draw win text
 	m_game->window().draw(m_endText);
@@ -243,214 +216,10 @@ void Scene_Berzerk::spawnPlayer(sf::Vector2f pos) {
 	m_player->addComponent<CTransform>(pos);
 	m_player->addComponent<CBoundingBox>(sf::Vector2f(15.f, 15.f));
 	m_player->addComponent<CInput>();
-	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("up"));
+	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
 	m_player->addComponent<CState>("grounded");
 }
 
-void Scene_Berzerk::spawnLane1()
-{
-	sf::Vector2f pos{ 480.f + 60.f, 600.f - 60.f }; // spawn position in 600 pixels from right, 60 pixels from bottom
-	sf::Vector2f vel{ -40.f, 0.f }; // velocity of 40 pixels per second to the left
-
-	for (int i{ 0 }; i < 3; ++i) {
-		auto car = m_entityManager.addEntity("moveLeft");
-		auto& tfm = car->addComponent<CTransform>(pos, vel);
-		car->addComponent<CBoundingBox>(sf::Vector2f{ 30.f, 15.f });
-		car->addComponent<CAnimation>(Assets::getInstance().getAnimation("raceCarL"));
-		pos.x -= 140.f; // spawn each car 140 pixels to the left
-	}
-}
-
-void Scene_Berzerk::spawnLane2()
-{
-	sf::Vector2f pos{ 0.f - 60.f, 600.f - 100.f }; // x position is 60 pixels to the left, 100 pixels from bottom (40 pixels from top of lane1)
-	sf::Vector2f vel{ 60.f, 0.f }; // velocity of 60 pixels per second to the right
-
-	for (int i{ 0 }; i < 3; ++i) {
-		auto car = m_entityManager.addEntity("moveRight");
-		auto& tfm = car->addComponent<CTransform>(pos, vel);
-		car->addComponent<CBoundingBox>(sf::Vector2f{ 30.f, 15.f });
-		car->addComponent<CAnimation>(Assets::getInstance().getAnimation("tractor"));
-		pos.x -= 140.f; // spawn each car 140 pixels to the left
-	}
-}
-
-// Spawn "car" entity in lane 3
-void Scene_Berzerk::spawnLane3()
-{
-	sf::Vector2f pos{ 480.f + 60.f, 600.f - 140.f }; // x position is 60 pixels to the left, 100 pixels from bottom (40 pixels from top of lane1)
-	sf::Vector2f vel{ -50.f, 0.f }; // Choosing my own velocity
-
-	for (int i{ 0 }; i < 3; ++i) {
-		auto car = m_entityManager.addEntity("moveLeft");
-		auto& tfm = car->addComponent<CTransform>(pos, vel);
-		car->addComponent<CBoundingBox>(sf::Vector2f{ 30.f, 15.f });
-		car->addComponent<CAnimation>(Assets::getInstance().getAnimation("car"));
-		pos.x -= 140.f;
-	}
-}
-
-// Spawn "raceCarR" entity in lane 4
-void Scene_Berzerk::spawnLane4()
-{
-	sf::Vector2f pos{ 0.f - 30.f, 600.f - 180.f };
-	sf::Vector2f vel{ 60.f, 0.f };
-
-	for (int i{ 0 }; i < 3; ++i) {
-		auto car = m_entityManager.addEntity("moveRight");
-		auto& tfm = car->addComponent<CTransform>(pos, vel);
-		car->addComponent<CBoundingBox>(sf::Vector2f{ 30.f, 15.f });
-		car->addComponent<CAnimation>(Assets::getInstance().getAnimation("raceCarR"));
-		pos.x -= 140.f;
-	}
-}
-
-// Spawn "truck" entity in lane 5
-void Scene_Berzerk::spawnLane5()
-{
-	sf::Vector2f pos{ 480.f + 180.f, 600.f - 220.f };
-	sf::Vector2f vel{ -50.f, 0.f }; // Choosing my own velocity
-
-	for (int i{ 0 }; i < 2; ++i) {
-		auto e = m_entityManager.addEntity("moveLeft");
-		auto& tfm = e->addComponent<CTransform>(pos, vel);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 60.f, 15.f });
-		e->addComponent<CAnimation>(Assets::getInstance().getAnimation("truck"));
-		pos.x -= 180.f;
-	}
-}
-
-// Spawn "raceCarR" entity in lane 6 (which doesn't dive)
-void Scene_Berzerk::spawnLane6()
-{
-	sf::Vector2f pos{ 480.f + 50.f, 600.f - 300.f };
-	sf::Vector2f vel{ -50.f, 0.f };
-
-	for (int i{ 0 }; i < 4; ++i) {
-		auto e = m_entityManager.addEntity("moveLeft");
-		auto& tfm = e->addComponent<CTransform>(pos, vel);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 90.f, 15.f });
-
-		if (i == 0) {
-
-			e->addComponent<CAnimation>(Assets::getInstance().getAnimation("3turtles"));
-		}
-		else {
-			e->addComponent<CAnimation>(Assets::getInstance().getAnimation("turtles"));
-		}
-
-		pos.x -= 150.f;
-	}
-}
-
-
-// Spawn "tree1" entity in lane 7
-void Scene_Berzerk::spawnLane7()
-{
-	sf::Vector2f pos{ 0.f - 20.f, 600.f - 340.f };
-	sf::Vector2f vel{ 60.f, 0.f };
-
-	for (int i{ 0 }; i < 2; ++i) {
-		auto e = m_entityManager.addEntity("moveRight");
-		auto& tfm = e->addComponent<CTransform>(pos, vel);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 93.f, 15.f });
-		e->addComponent<CAnimation>(Assets::getInstance().getAnimation("tree1"));
-		pos.x -= 230.f;
-	}
-}
-
-// Spawn "tree2" entity in lane 8
-void Scene_Berzerk::spawnLane8()
-{
-	sf::Vector2f pos{ 0.f - 150.f, 600.f - 380.f };
-	sf::Vector2f vel{ 100.f, 0.f };
-
-	for (int i{ 0 }; i < 2; ++i) {
-		auto e = m_entityManager.addEntity("tree");
-		auto& tfm = e->addComponent<CTransform>(pos, vel);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 200.f, 15.f });
-		e->addComponent<CAnimation>(Assets::getInstance().getAnimation("tree2"));
-		pos.x -= 340.f;
-	}
-}
-
-// Spawn "tree3" entity in lane 9
-void Scene_Berzerk::spawnLane9()
-{
-	sf::Vector2f pos{ 480.f + 40.f, 600.f - 420.f };
-	sf::Vector2f vel{ -50.f, 0.f };
-
-	for (int i{ 0 }; i < 3; ++i) {
-		auto e = m_entityManager.addEntity("moveLeft");
-		auto& tfm = e->addComponent<CTransform>(pos, vel);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 60.f, 15.f });
-		e->addComponent<CAnimation>(Assets::getInstance().getAnimation("2turtles"));
-
-		if (i == 2) {
-
-			e->addComponent<CAnimation>(Assets::getInstance().getAnimation("2turtles"));
-		}
-		else {
-			e->addComponent<CAnimation>(Assets::getInstance().getAnimation("turtles2"));
-		}
-
-		pos.x -= 150.f;
-	}
-}
-
-// Spawn "tree4" entity in lane 10
-void Scene_Berzerk::spawnLane10()
-{
-	sf::Vector2f pos{ 0.f - 40.f, 600.f - 460.f };
-	sf::Vector2f vel{ 100.f, 0.f };
-
-	for (int i{ 0 }; i < 3; ++i) {
-		auto e = m_entityManager.addEntity("moveRight");
-		auto& tfm = e->addComponent<CTransform>(pos, vel);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 93.f, 15.f });
-		e->addComponent<CAnimation>(Assets::getInstance().getAnimation("tree1"));
-		pos.x -= 160.f;
-	}
-}
-
-// Spawn "lillyPad" entity in lane 11
-void Scene_Berzerk::spawnLane11()
-{
-	sf::Vector2f pos{ 0.f + 38.f, 600.f - 500.f };
-	for (int i{ 0 }; i < 5; ++i) {
-		auto e = m_entityManager.addEntity("lillyPad");
-		auto& tfm = e->addComponent<CTransform>(pos);
-		e->addComponent<CBoundingBox>(sf::Vector2f{ 30.f, 30.f });
-		e->addComponent<CAnimation>(Assets::getInstance().getAnimation("lillyPad"));
-		pos.x += 100.f;
-	}
-}
-
-// Spawn "bugIcon" entity in a random lillyPad position
-void Scene_Berzerk::spawnBugIcon()
-{
-
-	std::vector<sf::Vector2f> lillyPadPositions = {
-		{ 0.f + 38.f, 600.f - 500.f },
-		{ 0.f + 138.f, 600.f - 500.f },
-		{ 0.f + 238.f, 600.f - 500.f },
-		{ 0.f + 338.f, 600.f - 500.f },
-		{ 0.f + 438.f, 600.f - 500.f }
-	};
-
-	std::uniform_int_distribution<std::size_t> dist(0, lillyPadPositions.size() - 1);
-	std::size_t randomIndex = dist(rng);
-
-	sf::Vector2f randomPos = lillyPadPositions[randomIndex];
-
-	auto e = m_entityManager.addEntity("bugIcon");
-	auto& tfm = e->addComponent<CTransform>(randomPos);
-	e->addComponent<CBoundingBox>(sf::Vector2f{ 30.f, 30.f });
-	e->addComponent<CAnimation>(Assets::getInstance().getAnimation("bugIcon"));
-
-	// Reset the timer
-	bugIconTimer.restart();
-}
 
 sf::FloatRect Scene_Berzerk::getViewBounds() {
 	return sf::FloatRect();
@@ -464,212 +233,10 @@ void Scene_Berzerk::sCollisions() {
 		return;
 	}
 
-	if (m_player->getComponent<CTransform>().pos.y > 600.f - 260.f) {
-		for (auto& vehicle : m_entityManager.getEntities("moveLeft")) {
-			if (checkCollision(*m_player, *vehicle)) {
-				// detected collision
-				onPlayerCollision();
-				break;
-			}
-		}
 
-		for (auto& vehicle2 : m_entityManager.getEntities("moveRight")) {
-			if (checkCollision(*m_player, *vehicle2)) {
-				// detected collision
-				onPlayerCollision();
-				break;
-			}
-		}
-	}
-
-	// Collision with water (above y: 600.f - 300.f)
-	if (m_player->getComponent<CTransform>().pos.y < 600.f - 260.f) {
-		bool onWater = true;
-		// Check collision with entity tagged "moveLeft"
-		for (auto& entity : m_entityManager.getEntities("moveLeft")) {
-			if (checkCollision(*m_player, *entity)) {
-				// Check collision with 3turtles or 2turtles had diving
-				if ((entity->getComponent<CAnimation>().animation.getName() == "3turtles"
-					&& entity->getComponent<CAnimation>().animation.m_currentFrame == 3)
-					|| (entity->getComponent<CAnimation>().animation.getName() == "2turtles"
-						&& entity->getComponent<CAnimation>().animation.m_currentFrame == 3)) {
-
-					onPlayerCollision();
-				}
-				else {
-					onWater = false;
-					// Incrising score
-					if (!m_laneCrossed["lane6"]) {
-						Assets::getInstance().incrementScore(10);
-						m_laneCrossed["lane6"] = true;
-					}
-					if (!m_laneCrossed["lane9"]) {
-						Assets::getInstance().incrementScore(10);
-						m_laneCrossed["lane9"] = true;
-					}
-					onPlayerCollisionDrive();
-				}
-			}
-		}
-
-		// Check collision with entity tagged "moveRight"
-		for (auto& water : m_entityManager.getEntities("moveRight")) {
-			if (checkCollision(*m_player, *water)) {
-				onWater = false;
-				// Incrising score
-				if (!m_laneCrossed["lane7"]) {
-					Assets::getInstance().incrementScore(10);
-					m_laneCrossed["lane7"] = true;
-				}
-				if (!m_laneCrossed["lane10"]) {
-					Assets::getInstance().incrementScore(10);
-					m_laneCrossed["lane10"] = true;
-				}
-				onPlayerCollisionDrive();
-			}
-		}
-
-		// Check collision with entity tagged "tree"
-		for (auto& water : m_entityManager.getEntities("tree")) {
-			if (checkCollision(*m_player, *water)) {
-				// Incrising score
-				if (!m_laneCrossed["lane8"]) {
-					Assets::getInstance().incrementScore(10);
-					m_laneCrossed["lane8"] = true;
-				}
-				onWater = false;
-				onPlayerCollisionDrive();
-			}
-		}
-
-		// Check collision with entity tagged "lillyPad"
-		for (auto& water : m_entityManager.getEntities("lillyPad")) {
-			if (checkCollision(*m_player, *water)) {
-				onWater = false;
-				onPlayerCollisionLillyPad();
-			}
-		}
-
-		if (onWater) {
-			onPlayerCollision();
-		}
-
-		// Collision with bounds (x: 20.f, 460.f)
-		auto& playerPos = m_player->getComponent<CTransform>().pos;
-		// Player dies if it goes out of bounds
-		if (playerPos.x <= 20.f || playerPos.x >= 460.f) {
-			onPlayerCollision();
-		}
-
-		// Collision with bugIcon
-		/*
-		* I could not implement this collision properly.
-		* Bounding box were okay, checkCollision were okay, because it's working with other entities.
-		* But when I check collision with bugIcon, it's not working, for some reason.
-		*/
-	}
 }
 
-// Handle collision with entities on water
-void Scene_Berzerk::onPlayerCollisionDrive() {
-	for (auto& entity : m_entityManager.getEntities("moveLeft")) {
-		if (checkCollision(*m_player, *entity)) {
 
-			sf::Vector2f entityVelocity = entity->getComponent<CTransform>().vel;
-
-			// Vel player = vel entity
-			m_player->getComponent<CTransform>().vel = entityVelocity;
-
-			auto& playerTransform = m_player->getComponent<CTransform>();
-			playerTransform.pos.y = entity->getComponent<CTransform>().pos.y;
-
-			playerTransform.pos.x = entity->getComponent<CTransform>().pos.x;
-
-			m_player->getComponent<CState>().state = "onEntity";
-		}
-	}
-
-	// entity tagged "moveRight"
-	for (auto& entity : m_entityManager.getEntities("moveRight")) {
-		if (checkCollision(*m_player, *entity)) {
-
-			sf::Vector2f entityVelocity = entity->getComponent<CTransform>().vel;
-
-			m_player->getComponent<CTransform>().vel = entityVelocity;
-
-			auto& playerTransform = m_player->getComponent<CTransform>();
-			playerTransform.pos.y = entity->getComponent<CTransform>().pos.y;
-
-			playerTransform.pos.x = entity->getComponent<CTransform>().pos.x;
-
-			m_player->getComponent<CState>().state = "onEntity";
-		}
-	}
-
-	// entity tagged "tree"
-	for (auto& entity : m_entityManager.getEntities("tree")) {
-		if (checkCollision(*m_player, *entity)) {
-
-			sf::Vector2f entityVelocity = entity->getComponent<CTransform>().vel;
-
-			m_player->getComponent<CTransform>().vel = entityVelocity;
-
-			auto& playerTransform = m_player->getComponent<CTransform>();
-			playerTransform.pos.y = entity->getComponent<CTransform>().pos.y;
-
-			playerTransform.pos.x = entity->getComponent<CTransform>().pos.x;
-
-			m_player->getComponent<CState>().state = "onEntity";
-		}
-	}
-}
-
-void Scene_Berzerk::onPlayerCollisionLillyPad() {
-
-	auto lillyPads = m_entityManager.getEntities("lillyPad");
-
-
-	for (auto& lillyPad : lillyPads) {
-		if (checkCollision(*m_player, *lillyPad)) {
-			if (lillyPad->getComponent<CState>().state == "hasFrog") {
-				Assets::getInstance().decrementScore(20);
-				onPlayerCollision();
-			}
-			// player is on lillyPad position
-			m_player->getComponent<CTransform>().pos = lillyPad->getComponent<CTransform>().pos;
-
-			m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("down"));
-			auto newPlayer = m_entityManager.addEntity("player");
-			newPlayer->addComponent<CTransform>(lillyPad->getComponent<CTransform>().pos);
-			newPlayer->addComponent<CBoundingBox>(sf::Vector2f(15.f, 15.f));
-			newPlayer->addComponent<CInput>();
-			newPlayer->addComponent<CAnimation>(Assets::getInstance().getAnimation("down"));
-			newPlayer->addComponent<CState>("grounded");
-
-			// Set CState to hasFrog to lillyPad, to avoid another frog to be placed on the same lillyPad
-			lillyPad->addComponent<CState>().state = "hasFrog";
-
-			m_lillyPadsOccupied++;
-
-			// update player reference to the new entity
-			m_player = newPlayer;
-
-			// increment score
-			Assets::getInstance().incrementScore(20);
-
-			if (m_lillyPadsOccupied == 5) {
-				Assets::getInstance().incrementScore(100);
-
-				// Winning message
-				winningMessage();
-			}
-
-			respawnPlayer();
-
-			break;
-		}
-	}
-}
 
 
 bool Scene_Berzerk::checkCollision(Entity& entity1, Entity& entity2) {
@@ -721,8 +288,9 @@ void Scene_Berzerk::onPlayerCollision() {
 
 void Scene_Berzerk::respawnPlayer() {
 	auto pos = m_worldView.getSize();
-	pos.x = pos.x / 2.f;
-	pos.y -= 20.f;
+	pos.x = 0.f - 20.f;
+	pos.y -= 600.f - 340.f;
+
 	m_player->getComponent<CTransform>().pos = pos;
 
 	// set the player to initial state 
@@ -730,7 +298,7 @@ void Scene_Berzerk::respawnPlayer() {
 	playerState = "grounded";
 
 	// set the player to initial animation
-	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("up"));
+	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
 }
 
 
@@ -749,18 +317,6 @@ void Scene_Berzerk::sUpdate(sf::Time dt) {
 	adjustPlayerPosition();
 	checkPlayerState();
 	sCollisions();
-
-	// Check if the bugIcon duration has passed
-	if (bugIconTimer.getElapsedTime() >= bugIconDuration) {
-		auto bugIcon = m_entityManager.getEntities("bugIcon");
-		// Remove the CAnimation component from bugIcon
-		for (auto& bug : bugIcon) {
-			bug->removeComponent<CAnimation>();
-		}
-
-		// Spawn a new bugIcon in a random position
-		spawnBugIcon();
-	}
 }
 
 void Scene_Berzerk::updateScoreText() {
