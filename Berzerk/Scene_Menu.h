@@ -8,8 +8,15 @@ private:
 	std::vector<std::string>	m_menuStrings;
 	sf::Text					m_menuText;
 	std::vector<std::string>	m_levelPaths;
-	int							m_menuIndex{0};
+	int							m_menuIndex{ 0 };
 	std::string					m_title;
+
+	sf::Font                    m_font;
+	sf::Sprite                  m_backgroundSprite;
+	std::vector<sf::Texture>    m_backgroundTextures;
+	sf::Clock                   m_backgroundClock;
+	sf::Time                    m_backgroundChangeInterval;
+
 
 
 	void init();
@@ -22,7 +29,7 @@ public:
 
 	void sRender() override;
 	void sDoAction(const Command& action) override;
-	
+
 
 };
 
