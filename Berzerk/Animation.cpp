@@ -26,15 +26,23 @@ Animation::Animation(const std::string& name,
 
 void Animation::update(sf::Time dt) {
 
+	if (!m_playing)
+		return;
+
 	m_countDown -= dt;
 	if (m_countDown < sf::Time::Zero) {
 		m_countDown = m_timePerFrame;
 		m_currentFrame += 1;
 
-		if (m_currentFrame >= m_frames.size() && !m_isRepeating)
-			return;  // on the last frame of non-repeating animaton, leave it
-		else
-			m_currentFrame = (m_currentFrame % m_frames.size());
+		if (m_currentFrame >= m_frames.size()) {
+			if (!m_isRepeating) {
+				m_currentFrame = 0;  // Reset to the first frame
+				m_playing = false;   // Stop the animation
+			}
+			else {
+				m_currentFrame = m_frames.size() - 1;
+			}
+		}
 
 		m_sprite.setTextureRect(m_frames[m_currentFrame]);
 		centerOrigin(m_sprite);
@@ -58,4 +66,22 @@ sf::Sprite& Animation::getSprite() {
 
 sf::Vector2f Animation::getBB() const {
 	return static_cast<sf::Vector2f>(m_frames[m_currentFrame].getSize());
+}
+
+void Animation::play()
+{
+	if (!m_playing)
+	{
+		m_countDown = sf::Time::Zero;
+		m_playing = true;
+	}
+}
+
+void Animation::stop()
+{
+	m_playing = false;
+	m_currentFrame = 0;
+
+	m_sprite.setTextureRect(m_frames[m_currentFrame]);
+	centerOrigin(m_sprite);
 }

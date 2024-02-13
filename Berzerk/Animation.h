@@ -19,6 +19,8 @@ public:
 	bool                        m_hasEnded{ false };
 	sf::Sprite                  m_sprite;
 
+	bool                        m_playing;
+
 
 public:
 	Animation() = default;
@@ -30,6 +32,9 @@ public:
 	const std::string& getName() const;
 	sf::Sprite& getSprite();
 	sf::Vector2f            getBB() const;
+
+	void                    play();
+	void                    stop();
 };
 
 

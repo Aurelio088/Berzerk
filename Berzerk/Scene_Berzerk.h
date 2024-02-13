@@ -14,6 +14,10 @@
 #include <unordered_map>
 
 
+struct LevelConfig {
+	float       playerSpeed{ 100.f };
+	float       enemySpeed{ 100.f };
+};
 
 class Scene_Berzerk : public Scene {
 private:
@@ -21,6 +25,7 @@ private:
 	sf::View        m_worldView;
 	sf::FloatRect   m_worldBounds;
 
+	LevelConfig     m_config;
 	sf::Text		m_scoreText;								// Added by Aurelio Rodrigues
 	sf::Text		m_livesText;								// Added by Aurelio Rodrigues
 	sf::Text		m_endText;									// Added by Aurelio Rodrigues
@@ -30,6 +35,8 @@ private:
 	bool			m_drawTextures{ true };
 	bool			m_drawAABB{ false };
 	bool			m_drawGrid{ false };
+	const Vector2f	m_gridSize{ 40, 40 };
+
 
 	int             m_score{ 0 };
 	int				m_lillyPadsOccupied = 0;
@@ -51,6 +58,7 @@ private:
 	void            checkPlayerState();
 	void	        registerActions();
 	void            spawnPlayer(sf::Vector2f pos);
+	void            spawnEnemy(sf::Vector2f pos);
 
 
 	// Adicionado por mim

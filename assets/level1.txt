@@ -1,7 +1,114 @@
 # Level 1
 
-World 480 600
+World 800 600
 
 
 Bkg Background 0 0
 
+# Top wall
+Tile Background	0   0  80 0	40  40  yes
+Tile Background	40  0  80 0	40  40  yes
+Tile Background	80  0  80 0	40  40  yes
+Tile Background	120 0  80 0	40  40  yes
+Tile Background	160 0  80 0	40  40  yes
+Tile Background	160 0  80 0	40  40  yes
+Tile Background	200 0  80 0	40  40  yes
+Tile Background	240 0  80 0	40  40  yes
+Tile Background	280 0  80 0	40  40  yes
+Tile Background	320 0  80 0	40  40  yes
+Tile Background	360 0  80 0	40  40  yes
+Tile Background	400 0  80 0	40  40  yes
+Tile Background	440 0  80 0	40  40  yes
+Tile Background	480 0  80 0	40  40  yes
+Tile Background	520 0  80 0	40  40  yes
+Tile Background	560 0  80 0	40  40  yes
+Tile Background	600 0  80 0	40  40  yes
+Tile Background	640 0  80 0	40  40  yes
+Tile Background	680 0  80 0	40  40  yes
+Tile Background	720 0  80 0	40  40  yes
+Tile Background	760 0  80 0	40  40  yes
+
+# Left wall
+Tile Background	0  40  40 0	40  40  yes
+Tile Background	0  80  40 0	40  40  yes
+Tile Background	0  120 40 0	40  40  yes
+Tile Background	0  160 40 0	40  40  yes
+Tile Background	0  320 40 0	40  40  yes
+Tile Background	0  360 40 0	40  40  yes
+Tile Background	0  400 40 0	40  40  yes
+Tile Background	0  440 40 0	40  40  yes
+Tile Background	0  480 40 0	40  40  yes
+Tile Background	0  520 40 0	40  40  yes
+
+# Botton wall
+Tile Background	0   560  80 0	40  40  yes
+Tile Background	40  560  80 0	40  40  yes
+Tile Background	80  560  80 0	40  40  yes
+Tile Background	120 560  80 0	40  40  yes
+Tile Background	160 560  80 0	40  40  yes
+Tile Background	160 560  80 0	40  40  yes
+Tile Background	200 560  80 0	40  40  yes
+Tile Background	240 560  80 0	40  40  yes
+Tile Background	280 560  80 0	40  40  yes
+Tile Background	320 560  80 0	40  40  yes
+Tile Background	360 560  80 0	40  40  yes
+Tile Background	400 560  80 0	40  40  yes
+Tile Background	440 560  80 0	40  40  yes
+Tile Background	480 560  80 0	40  40  yes
+Tile Background	520 560  80 0	40  40  yes
+Tile Background	560 560  80 0	40  40  yes
+Tile Background	600 560  80 0	40  40  yes
+Tile Background	640 560  80 0	40  40  yes
+Tile Background	680 560  80 0	40  40  yes
+Tile Background	720 560  80 0	40  40  yes
+Tile Background	760 560  80 0	40  40  yes
+
+# right wall
+Tile Background	760  40  40 0	40  40  yes
+Tile Background	760  80  40 0	40  40  yes
+Tile Background	760  120 40 0	40  40  yes
+Tile Background	760  160 40 0	40  40  yes
+Tile Background	760  320 40 0	40  40  yes
+Tile Background	760  360 40 0	40  40  yes
+Tile Background	760  400 40 0	40  40  yes
+Tile Background	760  440 40 0	40  40  yes
+Tile Background	760  480 40 0	40  40  yes
+Tile Background	760  520 40 0	40  40  yes
+
+# First wall 
+Tile Background	200  40  40 0	40  40  yes
+Tile Background	200  80  40 0	40  40  yes
+Tile Background	200  120 40 0	40  40  yes
+Tile Background	200  160 40 0	40  40  yes
+Tile Background	200  200 40 0	40  40  yes
+Tile Background	200  240 40 0	40  40  yes
+Tile Background	200  280 40 0	40  40  yes
+Tile Background	200  320 40 0	40  40  yes
+Tile Background	200  360 40 0	40  40  yes
+Tile Background	200  400 40 0	40  40  yes
+
+# Second wall
+Tile Background	400 400  80 0	40  40  yes
+Tile Background	440 400  80 0	40  40  yes
+Tile Background	480 400  80 0	40  40  yes
+Tile Background	520 400  80 0	40  40  yes
+Tile Background	560 400  80 0	40  40  yes
+Tile Background	600 400  80 0	40  40  yes
+Tile Background	640 400  80 0	40  40  yes
+Tile Background	680 400  80 0	40  40  yes
+Tile Background	720 400  80 0	40  40  yes
+
+# Third wall 
+Tile Background	560  160 40 0	40  40  yes
+Tile Background	560  200 40 0	40  40  yes
+Tile Background	560  240 40 0	40  40  yes
+Tile Background	560  280 40 0	40  40  yes
+Tile Background	560  320 40 0	40  40  yes
+Tile Background	560  360 40 0	40  40  yes
+
+# Forth wall
+Tile Background	240 160  80 0	40  40  yes
+Tile Background	280 160  80 0	40  40  yes
+Tile Background	320 160  80 0	40  40  yes
+Tile Background	360 160  80 0	40  40  yes
+Tile Background	400 160  80 0	40  40  yes

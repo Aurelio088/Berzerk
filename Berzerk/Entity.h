@@ -25,6 +25,8 @@ private:
 	bool                    m_active{ true };
 	ComponentTuple          m_components;
 
+	sf::Vector2f m_boundingBoxOffset{ 0.f, 0.f };	// Add by Aurelio
+
 public:
 
 	void                    destroy();
@@ -45,10 +47,22 @@ public:
 	inline T& addComponent(TArgs &&... mArgs) {
 		auto& component = getComponent<T>();
 		component = T(std::forward<TArgs>(mArgs)...);
+
+		// Add by Aurelio
+		if constexpr (std::is_same<T, CBoundingBox>::value) {
+			component.offset = m_boundingBoxOffset;
+		}
+		// End add by Aurelio
+
 		component.has = true;
 		return component;
 	}
 
+	// Add by Aurelio
+	inline void setBoundingBoxOffset(const sf::Vector2f& offset) {
+		m_boundingBoxOffset = offset;
+	}
+	// End add by Aurelio
 
 	template<typename T>
 	inline bool removeComponent() { // Removed "const"

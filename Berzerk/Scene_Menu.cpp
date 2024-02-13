@@ -13,7 +13,7 @@ Scene_Menu::Scene_Menu(GameEngine* gameEngine)
 {
 	init();
 	MusicPlayer::getInstance().play("menuTheme");
-	MusicPlayer::getInstance().setVolume(50);
+	MusicPlayer::getInstance().setVolume(30);
 
 	// Load the background textures
 	m_backgroundTextures.resize(4);
@@ -57,16 +57,16 @@ void Scene_Menu::init()
 
 void Scene_Menu::update(sf::Time dt)
 {
-	if (m_backgroundClock.getElapsedTime() > m_backgroundChangeInterval)
-	{
-		// Change the background
-		static int backgroundIndex = 0;
-		backgroundIndex = (backgroundIndex + 1) % m_backgroundTextures.size();
-		m_backgroundSprite.setTexture(m_backgroundTextures[backgroundIndex]);
+	//if (m_backgroundClock.getElapsedTime() > m_backgroundChangeInterval)
+	//{
+	//	// Change the background
+	//	static int backgroundIndex = 0;
+	//	backgroundIndex = (backgroundIndex + 1) % m_backgroundTextures.size();
+	//	m_backgroundSprite.setTexture(m_backgroundTextures[backgroundIndex]);
 
-		// Reset the clock
-		m_backgroundClock.restart();
-	}
+	//	// Reset the clock
+	//	m_backgroundClock.restart();
+	//}
 
 	m_entityManager.update();
 }

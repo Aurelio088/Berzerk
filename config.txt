@@ -9,9 +9,12 @@ Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
 
 
 # Textures
-Texture Background      ../assets/Textures/background1.png
+#Texture Background      ../assets/Textures/Brick.png
 Texture Title           ../assets/Textures/FroggerTitle.png
 Texture Entities        ../assets/Textures/soldier.png
+#Texture Enemy1		../assets/Textures/enemy1/enemy1_walk.png
+Texture Background	../assets/Textures/Tile.png
+
 
 # Sprites
 Sprite Background       Background   0 0  480 600
@@ -23,6 +26,7 @@ Sound death             ../assets/Sound/froggerDie.wav
 Sound hop               ../assets/Sound/froggerMove.wav
 
 JSON                    ../assets/Textures/berzerk.json
+#JSON				../assets/Textures/berzerk_enemy.json
 
 
 #
@@ -32,25 +36,3 @@ Animation       down            Entities    8        no
 Animation       left            Entities    8        no
 Animation       right           Entities    8        no
 Animation       die             Entities    8        no
-
-Animation       turtles2        Entities    1        no
-Animation       turtles         Entities    1        no
-
-Animation       2turtles        Entities    1        yes
-Animation       3turtles        Entities    1        yes
-Animation       bugIcon         Entities    1        no
-Animation       car             Entities    1        no
-Animation       croc            Entities    1        yes
-Animation       crocIcon        Entities    1        no
-
-# It was missing tractor
-Animation       tractor         Entities    1        no
-
-Animation       frogIcon        Entities    1        no
-Animation       lillyPad        Entities    1        no
-Animation       lives           Entities    1        no
-Animation       raceCarL        Entities    1        no
-Animation       raceCarR        Entities    1        no
-Animation       tree1           Entities    1        no
-Animation       tree2           Entities    1        no
-Animation       truck           Entities    1        no

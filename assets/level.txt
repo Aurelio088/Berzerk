@@ -1,0 +1,72 @@
+# Level 1
+
+World 800 600
+
+
+Bkg Background 0 0
+
+Tile Brick		0	14	no
+Tile Brick		0	13	yes
+Tile Brick		0	12	yes
+Tile Brick		0	11	yes
+Tile Brick		0	10	yes
+Tile Brick		0	6	yes
+Tile Brick		0	5	yes
+Tile Brick		0	4	yes
+Tile Brick		0	3	yes
+Tile Brick		0	2	yes
+Tile Brick		0	1	yes
+Tile Brick		0	0	no	
+Tile Brick		1	0	yes
+Tile Brick		2	0	yes
+Tile Brick		3	0	yes
+Tile Brick		4	0	yes
+Tile Brick		5	0	yes
+Tile Brick		6	0	yes
+Tile Brick		7	0	yes
+Tile Brick		8	0	yes
+Tile Brick		9	0	yes
+Tile Brick		10	0	yes
+Tile Brick		11	0	yes
+Tile Brick		12	0	yes
+Tile Brick		13	0	yes
+Tile Brick		14	0	yes
+Tile Brick		15	0	yes
+Tile Brick		16	0	yes
+Tile Brick		17	0	yes
+Tile Brick		18	0	yes
+Tile Brick		19	0	no
+Tile Brick		1	14	yes
+Tile Brick		2	14 	yes	
+Tile Brick		3	14	yes
+Tile Brick		4	14	yes
+Tile Brick		5	14	yes
+Tile Brick		6	14	yes
+Tile Brick		7	14	yes
+Tile Brick		8	14	yes
+Tile Brick		9	14	yes
+Tile Brick		10	14	yes
+Tile Brick		11	14	yes
+Tile Brick		12	14	yes
+Tile Brick		13	14	yes
+Tile Brick		14	14	yes
+Tile Brick		15	14	yes
+Tile Brick		16	14	yes
+Tile Brick		17	14	yes
+Tile Brick		18	14	yes
+Tile Brick		19	14	no
+Tile Brick		19	13	yes
+Tile Brick		19	12	yes
+Tile Brick		19	11	yes
+Tile Brick		19	10	yes
+Tile Brick		19	9	yes
+Tile Brick		19	8	yes
+Tile Brick		19	4	yes
+Tile Brick		19	3	yes
+Tile Brick		19	2	yes
+Tile Brick		19	1	yes
+
+
+
+
+

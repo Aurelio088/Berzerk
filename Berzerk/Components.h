@@ -70,6 +70,7 @@ struct CBoundingBox : public Component
 {
 	sf::Vector2f size{ 0.f, 0.f };
 	sf::Vector2f halfSize{ 0.f, 0.f };
+	sf::Vector2f offset = { 0.0f, 0.0f };
 
 	CBoundingBox() = default;
 	CBoundingBox(const sf::Vector2f& s) : size(s), halfSize(0.5f * s)
@@ -84,17 +85,22 @@ struct CState : public Component {
 
 };
 
-
 struct CInput : public Component
 {
-	enum dirs {
+	/*enum dirs {
 		UP = 1 << 0,
 		DOWN = 1 << 1,
 		LEFT = 1 << 2,
 		RIGHT = 1 << 3
-	};
+	};*/
 
-	unsigned char dir{ 0 };
+	//unsigned char dir{ 0 };
+
+	bool up{ false };
+	bool down{ false };
+	bool left{ false };
+	bool right{ false };
+
 
 	CInput() = default;
 };
