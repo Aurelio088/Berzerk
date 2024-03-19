@@ -34,13 +34,23 @@ void Animation::update(sf::Time dt) {
 		m_countDown = m_timePerFrame;
 		m_currentFrame += 1;
 
+		//if (m_currentFrame >= m_frames.size()) {
+		//	if (!m_isRepeating) {
+		//		m_currentFrame = 0;  // Reset to the first frame
+		//		m_playing = false;   // Stop the animation
+		//	}
+		//	else {
+		//		m_currentFrame = m_frames.size() - 1;
+		//	}
+		//}
+
 		if (m_currentFrame >= m_frames.size()) {
 			if (!m_isRepeating) {
 				m_currentFrame = 0;  // Reset to the first frame
 				m_playing = false;   // Stop the animation
 			}
 			else {
-				m_currentFrame = m_frames.size() - 1;
+				m_currentFrame = 0;  // Reset to the first frame for repetition
 			}
 		}
 

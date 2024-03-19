@@ -101,7 +101,7 @@ void Scene_Menu::sRender() {
 		}
 
 		optionText.setOrigin(optionText.getLocalBounds().width / 2.f, 0);
-		optionText.setPosition(m_game->window().getSize().x / 2.f, m_game->window().getSize().y * 0.45f + i * 55); // Posicione as opções verticalmente
+		optionText.setPosition(m_game->window().getSize().x / 2.f, m_game->window().getSize().y * 0.45f + i * 55);
 		m_game->window().draw(optionText);
 	}
 }

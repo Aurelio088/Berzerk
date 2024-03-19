@@ -25,6 +25,8 @@ private:
 	sf::View        m_worldView;
 	sf::FloatRect   m_worldBounds;
 
+	sPtrEntt        m_grid{ nullptr };							// Added by Aurelio Rodrigues
+
 	LevelConfig     m_config;
 	sf::Text		m_scoreText;								// Added by Aurelio Rodrigues
 	sf::Text		m_livesText;								// Added by Aurelio Rodrigues
@@ -54,22 +56,30 @@ private:
 
 	// helper functions
 	void            playerMovement();
+	void            playerMovement2();
 	void            adjustPlayerPosition();
 	void            checkPlayerState();
 	void	        registerActions();
 	void            spawnPlayer(sf::Vector2f pos);
-	void            spawnEnemy(sf::Vector2f pos);
+	void            spawnEnemy(const sf::Vector2f& initialPosition);
+	void            spawnEnemy2(const sf::Vector2f& initialPosition);		// Added by Aurelio Rodrigues
+	void			spawnDragonSpear(const sf::Vector2f& initialPosition);						// Added by Aurelio Rodrigues
 
 
 	// Adicionado por mim
+	void			enemy1Movement();							// Added by Aurelio Rodrigues
+	void			enemy2Movement();							// Added by Aurelio Rodrigues
+
 	void            updateScoreText(); 							// Added by Aurelio Rodrigues
 	void            updateLivesText(); 							// Added by Aurelio Rodrigues
 	void            winningMessage(); 							// Added by Aurelio Rodrigues
 
 	void 		    respawnPlayer();
+	void			respawnEnemies();							// Added by Aurelio Rodrigues
 	void 		    onPlayerCollision(); 						// Added by Aurelio Rodrigues
 
 	bool 		    checkCollision(Entity& entity1, Entity& entity2); // Added by Aurelio Rodrigues
+	void			updateEnemyChase();									// Added by Aurelio Rodrigues
 
 
 	// FIM Adicionado por mim

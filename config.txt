@@ -12,13 +12,15 @@ Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
 #Texture Background      ../assets/Textures/Brick.png
 Texture Title           ../assets/Textures/FroggerTitle.png
 Texture Entities        ../assets/Textures/soldier.png
-#Texture Enemy1		../assets/Textures/enemy1/enemy1_walk.png
+Texture Enemy1		../assets/Textures/enemy1/enemy1_walk.png
 Texture Background	../assets/Textures/Tile.png
+Texture DragonSpear	../assets/Textures/dragonspear.png
 
 
 # Sprites
-Sprite Background       Background   0 0  480 600
-Sprite Title            Title 0 0 480 600
+Sprite Background       Background  	0 0  	480 600
+Sprite Title            Title 		0 0 	480 600
+#Sprite DragonSpear      DragonSpear		40 40 480 600
 
 #
 # SOUNDS
@@ -26,7 +28,7 @@ Sound death             ../assets/Sound/froggerDie.wav
 Sound hop               ../assets/Sound/froggerMove.wav
 
 JSON                    ../assets/Textures/berzerk.json
-#JSON				../assets/Textures/berzerk_enemy.json
+#JSON2				../assets/Textures/berzerk_enemy.json
 
 
 #
@@ -36,3 +38,19 @@ Animation       down            Entities    8        no
 Animation       left            Entities    8        no
 Animation       right           Entities    8        no
 Animation       die             Entities    8        no
+
+Animation	    spearUp		  Entities    8        no
+Animation	    spearDown	  Entities    8        no
+Animation	    spearLeft	  Entities    8        no
+Animation	    spearRight	  Entities    8        no
+
+Animation       enemyUp         Enemy1  	  5        no
+Animation       enemyDown       Enemy1  	  5        no
+Animation       enemyLeft       Enemy1 	  5        yes
+Animation       enemyRight      Enemy1 	  5        yes
+#Animation       enemyDie        Enemy1 	  5        no
+
+Animation       dragonSpear     DragonSpear 1        no
+
+
+

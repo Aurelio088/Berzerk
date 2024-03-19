@@ -186,6 +186,35 @@ void Assets::loadJson(const std::string& path) {
 			}
 			f.close();
 		}
+		//if (token == "JSON2")
+		//{
+		//	using json = nlohmann::json;
+
+		//	std::string  path;
+		//	confFile >> path;
+
+		//	// read the FrameSets from the json file
+		//	std::ifstream f(path);
+		//	json data = json::parse(f)["frames"];
+
+		//	std::cout << std::setw(4) << data << "\n\n";
+
+		//	for (auto i : data) {
+
+		//		// clean up animation name
+		//		std::string tmp = i["filename"];
+		//		std::string::size_type n = tmp.find(" (");
+		//		if (n == std::string::npos)
+		//			n = tmp.find(".png");
+
+		//		// create IntRect for each frame in animation
+		//		auto ir = sf::IntRect(i["frame"]["x"], i["frame"]["y"],
+		//			i["frame"]["w"], i["frame"]["h"]);
+
+		//		m_frameSets[tmp.substr(0, n)].push_back(ir);
+		//	}
+		//	f.close();
+		//}
 		else
 		{
 			// ignore rest of line and continue

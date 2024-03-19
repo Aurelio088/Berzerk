@@ -22,6 +22,7 @@ struct Component
 
 struct CAnimation : public Component {
 	Animation   animation;
+	std::string currentState;
 
 	CAnimation() = default;
 	CAnimation(const Animation& a) : animation(a) {}
@@ -75,9 +76,13 @@ struct CBoundingBox : public Component
 	CBoundingBox() = default;
 	CBoundingBox(const sf::Vector2f& s) : size(s), halfSize(0.5f * s)
 	{}
+
+	CBoundingBox(const sf::Vector2f& s, const sf::Vector2f& o) : size(s), halfSize(0.5f * s), offset(o)
+	{}
 };
 
 struct CState : public Component {
+
 	std::string state{ "none" };
 
 	CState() = default;
@@ -100,6 +105,8 @@ struct CInput : public Component
 	bool down{ false };
 	bool left{ false };
 	bool right{ false };
+
+	bool dragonSpearCarried{ false };
 
 
 	CInput() = default;
