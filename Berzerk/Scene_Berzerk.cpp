@@ -19,7 +19,6 @@ namespace {
 	std::mt19937 rng(rd());
 }
 
-
 Scene_Berzerk::Scene_Berzerk(GameEngine* gameEngine, const std::string& levelPath)
 	: Scene(gameEngine)
 	, m_worldView(gameEngine->window().getDefaultView()) {
@@ -41,7 +40,7 @@ Scene_Berzerk::Scene_Berzerk(GameEngine* gameEngine, const std::string& levelPat
 	float yCenter = m_game->window().getSize().y - (enemy1Position.y * m_gridSize.y + m_gridSize.y / 2.0f);
 
 	// Spawn the enemy
-	spawnEnemy(sf::Vector2f(xCenter, yCenter));
+	spawnEnemy(sf::Vector2f(xCenter, yCenter), sf::Vector2f(-50.0f, 0.0f), 2.0f, 17.0f);
 
 	// spawn enemy 2 (Grid position 7, 12)
 	sf::Vector2f enemy2Position(7, 12);
@@ -50,69 +49,37 @@ Scene_Berzerk::Scene_Berzerk(GameEngine* gameEngine, const std::string& levelPat
 	float newXCenter = enemy2Position.x * m_gridSize.x + m_gridSize.x / 2.0f;
 	float newYCenter = m_game->window().getSize().y - (enemy2Position.y * m_gridSize.y + m_gridSize.y / 2.0f);
 
-	spawnEnemy2(sf::Vector2f(newXCenter, newYCenter));
+	spawnEnemy(sf::Vector2f(newXCenter, newYCenter), sf::Vector2f(50.0f, 0.0f), 7.0f, 17.0f);
 
 	// spawn dragonSpare
 	spawnDragonSpear(sf::Vector2f(12 * m_gridSize.x, (600 - 7 * m_gridSize.y) - m_gridSize.y / 2));
 
+	// spawn power up (position 18, 2)
+	spawnPowerUp(sf::Vector2f(18 * m_gridSize.x, (600 - 2 * m_gridSize.y) - m_gridSize.y / 2));
 
-	MusicPlayer::getInstance().play("gameTheme");
+	//MusicPlayer::getInstance().play("gameTheme");
 	MusicPlayer::getInstance().setVolume(30);
 
 }
-
 
 void Scene_Berzerk::init(const std::string& path) {
 }
 
 void Scene_Berzerk::sMovement(sf::Time dt) {
 	playerMovement();
-	enemy1Movement();
-	enemy2Movement();
+	enemyMovement();
 
 	// move all objects
-	for (auto e : m_entityManager.getEntities()) {
-		//if (e->hasComponent<CAnimation>()) {
-		//	auto& anim = e->getComponent<CAnimation>();
+	for (auto& e : m_entityManager.getEntities()) {
 
-		//	// Verificar o estado atual e atualizar a animação conforme necessário
-		//	if (e->hasComponent<CInput>()) {
-		//		auto& input = e->getComponent<CInput>();
-		//		if (input.dragonSpearCarried) {
-		//			anim.setState("carrying_spear");
-		//		}
-		//		else {
-		//			anim.setState("normal");
-		//		}
-		//	}
-
-		//	// Atualizar a animação com base no estado atual
-		//	anim.animation.update(dt, anim.currentState);
-		//}
-		if (e->hasComponent<CAnimation>()) {
-			auto& anim = e->getComponent<CAnimation>();
-
-			// Verificar o estado atual e atualizar a animação conforme necessário
-			if (e->hasComponent<CInput>()) {
-				auto& input = e->getComponent<CInput>();
-				anim.currentState = input.dragonSpearCarried ? "carrying_spear" : "normal";
-			}
-
-			// Atualizar a animação com base no estado atual
-			anim.animation.update(dt);
-		}
 		if (e->hasComponent<CTransform>()) {
 			auto& tfm = e->getComponent<CTransform>();
-
-			/*tfm.pos += tfm.vel * dt.asSeconds();
-			tfm.angle += tfm.angVel * dt.asSeconds();*/
 
 			tfm.prevPos = tfm.pos;
 			tfm.pos += tfm.vel * dt.asSeconds();
 		}
 	}
 }
-
 
 void Scene_Berzerk::registerActions() {
 	registerAction(sf::Keyboard::P, "PAUSE");
@@ -131,7 +98,6 @@ void Scene_Berzerk::registerActions() {
 	registerAction(sf::Keyboard::Down, "DOWN");
 }
 
-
 void Scene_Berzerk::onEnd() {
 	m_game->changeScene("MENU", nullptr, false);
 }
@@ -145,38 +111,47 @@ void Scene_Berzerk::playerMovement() {
 	sf::Vector2f pv{ 0.f, 0.f };
 	auto& animation = m_player->getComponent<CAnimation>().animation;
 	auto& pInput = m_player->getComponent<CInput>();
+	auto& pPowerUps = m_player->getComponent<CPowerUps>();
 
 	// Diagonal movements
 	if (pInput.up && pInput.left) {
 		pv.x -= 1;
 		pv.y -= 1;
 
-		if (animation.getName() != "left")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearLeft" : "left";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 	else if (pInput.up && pInput.right) {
 		pv.x += 1;
 		pv.y -= 1;
 
-		if (animation.getName() != "right")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearRight" : "right";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 	else if (pInput.down && pInput.left) {
 		pv.x -= 1;
 		pv.y += 1;
 
-		if (animation.getName() != "left")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearLeft" : "left";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 	else if (pInput.down && pInput.right) {
 		pv.x += 1;
 		pv.y += 1;
 
-		if (animation.getName() != "right")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearRight" : "right";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 
@@ -184,29 +159,37 @@ void Scene_Berzerk::playerMovement() {
 	else if (pInput.left) {
 		pv.x -= 1;
 
-		if (animation.getName() != "left")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearLeft" : "left";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 	else if (pInput.right) {
 		pv.x += 1;
 
-		if (animation.getName() != "right")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearRight" : "right";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 	else if (pInput.up) {
 		pv.y -= 1;
 
-		if (animation.getName() != "up")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("up")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearUp" : "up";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 	else if (pInput.down) {
 		pv.y += 1;
 
-		if (animation.getName() != "down")
-			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("down")).animation;
+		std::string animationName = pPowerUps.dragonSpearCarried ? "spearDown" : "down";
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 
@@ -214,273 +197,31 @@ void Scene_Berzerk::playerMovement() {
 	m_player->getComponent<CTransform>().vel = m_config.playerSpeed * pv;
 }
 
-//void Scene_Berzerk::playerMovement() {
-//	// no movement if player is dead
-//	if (m_player->hasComponent<CState>() && m_player->getComponent<CState>().state == "dead")
-//		return;
-//
-//	// player movement
-//	sf::Vector2f pv{ 0.f, 0.f };
-//	auto& animation = m_player->getComponent<CAnimation>().animation;
-//	auto& pInput = m_player->getComponent<CInput>();
-//
-//	if (pInput.dragonSpearCarried) {
-//		// Diagonal movements
-//		if (pInput.up && pInput.left) {
-//			pv.x -= 1;
-//			pv.y -= 1;
-//
-//			if (animation.getName() != "spearLeft")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft")).animation;
-//			animation.play();
-//		}
-//		else if (pInput.up && pInput.right) {
-//			pv.x += 1;
-//			pv.y -= 1;
-//
-//			if (animation.getName() != "spearRight")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight")).animation;
-//			animation.play();
-//		}
-//		else if (pInput.down && pInput.left) {
-//			pv.x -= 1;
-//			pv.y += 1;
-//
-//			if (animation.getName() != "spearLeft")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft")).animation;
-//			animation.play();
-//		}
-//		else if (pInput.down && pInput.right) {
-//			pv.x += 1;
-//			pv.y += 1;
-//
-//			if (animation.getName() != "spearRight")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight")).animation;
-//			animation.play();
-//		}
-//
-//		// Single movements
-//		else if (pInput.left) {
-//			pv.x -= 1;
-//
-//			if (animation.getName() != "spearLeft")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft")).animation;
-//			animation.play();
-//		}
-//		else if (pInput.right) {
-//			pv.x += 1;
-//
-//			if (animation.getName() != "spearRight")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight")).animation;
-//			animation.play();
-//		}
-//		else if (pInput.up) {
-//			pv.y -= 1;
-//
-//			if (animation.getName() != "spearUp")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearUp")).animation;
-//			animation.play();
-//		}
-//		else if (pInput.down) {
-//			pv.y += 1;
-//
-//			if (animation.getName() != "spearDown")
-//				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearDown")).animation;
-//			animation.play();
-//		}
-//		else {
-//			// Diagonal movements
-//			if (pInput.up && pInput.left) {
-//				pv.x -= 1;
-//				pv.y -= 1;
-//
-//				if (animation.getName() != "left")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left")).animation;
-//				animation.play();
-//			}
-//			else if (pInput.up && pInput.right) {
-//				pv.x += 1;
-//				pv.y -= 1;
-//
-//				if (animation.getName() != "right")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right")).animation;
-//				animation.play();
-//			}
-//			else if (pInput.down && pInput.left) {
-//				pv.x -= 1;
-//				pv.y += 1;
-//
-//				if (animation.getName() != "left")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left")).animation;
-//				animation.play();
-//			}
-//			else if (pInput.down && pInput.right) {
-//				pv.x += 1;
-//				pv.y += 1;
-//
-//				if (animation.getName() != "right")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right")).animation;
-//				animation.play();
-//			}
-//
-//			// Single movements
-//			else if (pInput.left) {
-//				pv.x -= 1;
-//
-//				if (animation.getName() != "left")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("left")).animation;
-//				animation.play();
-//			}
-//			else if (pInput.right) {
-//				pv.x += 1;
-//
-//				if (animation.getName() != "right")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right")).animation;
-//				animation.play();
-//			}
-//			else if (pInput.up) {
-//				pv.y -= 1;
-//
-//				if (animation.getName() != "up")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("up")).animation;
-//				animation.play();
-//			}
-//			else if (pInput.down) {
-//				pv.y += 1;
-//
-//				if (animation.getName() != "down")
-//					animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("down")).animation;
-//				animation.play();
-//			}
-//		}
-//
-//		pv = normalize(pv);
-//		m_player->getComponent<CTransform>().vel = m_config.playerSpeed * pv;
-//	}
-//}
+void Scene_Berzerk::enemyMovement() {
+	auto& enemies = m_entityManager.getEntities("enemy");
 
-//void Scene_Berzerk::playerMovement2() {
-//	// no movement if player is dead
-//	if (m_player->hasComponent<CState>() && m_player->getComponent<CState>().state == "dead")
-//		return;
-//
-//	// player movement
-//	sf::Vector2f pv{ 0.f, 0.f };
-//	auto& animation = m_player->getComponent<CAnimation>().animation;
-//	auto& pInput = m_player->getComponent<CInput>();
-//
-//	// Diagonal movements
-//	if (pInput.up && pInput.left) {
-//		pv.x -= 1;
-//		pv.y -= 1;
-//
-//		if (animation.getName() != "spearLeft")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft")).animation;
-//		animation.play();
-//	}
-//	else if (pInput.up && pInput.right) {
-//		pv.x += 1;
-//		pv.y -= 1;
-//
-//		if (animation.getName() != "spearRight")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight")).animation;
-//		animation.play();
-//	}
-//	else if (pInput.down && pInput.left) {
-//		pv.x -= 1;
-//		pv.y += 1;
-//
-//		if (animation.getName() != "spearLeft")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft")).animation;
-//		animation.play();
-//	}
-//	else if (pInput.down && pInput.right) {
-//		pv.x += 1;
-//		pv.y += 1;
-//
-//		if (animation.getName() != "spearRight")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight")).animation;
-//		animation.play();
-//	}
-//
-//	// Single movements
-//	else if (pInput.left) {
-//		pv.x -= 1;
-//
-//		if (animation.getName() != "spearLeft")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft")).animation;
-//		animation.play();
-//	}
-//	else if (pInput.right) {
-//		pv.x += 1;
-//
-//		if (animation.getName() != "spearRight")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight")).animation;
-//		animation.play();
-//	}
-//	else if (pInput.up) {
-//		pv.y -= 1;
-//
-//		if (animation.getName() != "spearUp")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearUp")).animation;
-//		animation.play();
-//	}
-//	else if (pInput.down) {
-//		pv.y += 1;
-//
-//		if (animation.getName() != "spearDown")
-//			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearDown")).animation;
-//		animation.play();
-//	}
-//
-//	pv = normalize(pv);
-//	m_player->getComponent<CTransform>().vel = m_config.playerSpeed * pv;
-//}
+	for (auto& enemy : enemies)
+	{
+		auto& enemyTransform = enemy->getComponent<CTransform>();
+		auto& enemyScript = enemy->getComponent<CScript>();
+		sf::Vector2f currentPos = enemyTransform.pos;
 
-void Scene_Berzerk::enemy1Movement() {
-	auto enemy1 = m_entityManager.getEntities("enemy");
+		if (currentPos.x >= enemyScript.gridMax * m_gridSize.x) {
+			enemyTransform.vel = sf::Vector2f(-50, 0);
 
-	auto& enemyTransform = enemy1[0]->getComponent<CTransform>();
-	sf::Vector2f currentPos = enemyTransform.pos;
+			auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
+			enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation;
+			enemyAnimation.play();
+		}
+		else if (currentPos.x <= enemyScript.gridMin * m_gridSize.x) {
+			enemyTransform.vel = sf::Vector2f(50, 0);
 
-	if (currentPos.x >= 17 * m_gridSize.x) {
-		enemyTransform.vel = sf::Vector2f(-50, 0);
-
-		auto& enemyAnimation = enemy1[0]->getComponent<CAnimation>().animation;
-		enemyAnimation = enemy1[0]->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation;
-		enemyAnimation.play();
-	}
-	else if (currentPos.x <= 2 * m_gridSize.x) {
-		enemyTransform.vel = sf::Vector2f(50, 0);
-
-		auto& enemyAnimation = enemy1[0]->getComponent<CAnimation>().animation;
-		enemyAnimation = enemy1[0]->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation;
-		enemyAnimation.play();
+			auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
+			enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation;
+			enemyAnimation.play();
+		}
 	}
 }
-
-void Scene_Berzerk::enemy2Movement() {
-	auto enemy2 = m_entityManager.getEntities("enemy2");
-
-	auto& enemyTransform = enemy2[0]->getComponent<CTransform>();
-	sf::Vector2f currentPos = enemyTransform.pos;
-
-	if (currentPos.x <= 7 * m_gridSize.x) {
-		enemyTransform.vel = sf::Vector2f(50, 0);
-
-		auto& enemyAnimation = enemy2[0]->getComponent<CAnimation>().animation;
-		enemyAnimation = enemy2[0]->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation;
-		enemyAnimation.play();
-	}
-	else if (currentPos.x >= 17 * m_gridSize.x) {
-		enemyTransform.vel = sf::Vector2f(-50, 0);
-
-		auto& enemyAnimation = enemy2[0]->getComponent<CAnimation>().animation;
-		enemyAnimation = enemy2[0]->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation;
-		enemyAnimation.play();
-	}
-}
-
 
 void Scene_Berzerk::sRender() {
 	m_game->window().setView(m_worldView);
@@ -492,20 +233,14 @@ void Scene_Berzerk::sRender() {
 	m_game->window().draw(background);
 
 	// draw bkg first
-	for (auto e : m_entityManager.getEntities("bkg")) {
+	for (auto& e : m_entityManager.getEntities("bkg")) {
 		if (e->getComponent<CSprite>().has) {
 			auto& sprite = e->getComponent<CSprite>().sprite;
 			m_game->window().draw(sprite);
 		}
 	}
 
-	// Set the view to the center of the player
-	/*auto& pPos = m_player->getComponent<CTransform>().pos;
-	float centerX = m_game->window().getSize().x / 2;
-	float centerY = m_game->window().getSize().y / 2;*/
 	sf::View view = m_game->window().getView();
-	//view.setCenter(centerX, centerY);
-	//m_game->window().setView(view);
 
 	for (auto& e : m_entityManager.getEntities()) {
 		if (e->hasComponent<CSprite>())
@@ -592,10 +327,6 @@ void Scene_Berzerk::sRender() {
 		m_game->window().draw(lines);
 	}
 
-	// draw dragonSpear
-
-
-
 	// draw score
 	//m_game->window().draw(m_scoreText);
 
@@ -629,7 +360,7 @@ void Scene_Berzerk::sDoAction(const Command& action) {
 		else if (action.name() == "UP") { m_player->getComponent<CInput>().up = true; }
 		else if (action.name() == "DOWN") { m_player->getComponent<CInput>().down = true; }
 
-		else if (action.name() == "CARRY_SPEAR") { m_player->getComponent<CInput>().dragonSpearCarried = true; }
+		else if (action.name() == "CARRY_SPEAR") { m_player->getComponent<CPowerUps>().dragonSpearCarried = true; }
 	}
 
 	// Key release
@@ -663,32 +394,12 @@ void Scene_Berzerk::sDoAction(const Command& action) {
 				animation.stop();
 			}
 		}
-		else if (action.name() == "RELEASE_SPEAR") { m_player->getComponent<CInput>().dragonSpearCarried = false; }
+		else if (action.name() == "RELEASE_SPEAR") { m_player->getComponent<CPowerUps>().dragonSpearCarried = false; }
 	}
-
-
-	// on Key Release
-	// the frog can only go in one direction at a time, no angles
-	// use a bitset and exclusive setting.
-	/*else if (action.type() == "END" && (action.name() == "LEFT" || action.name() == "RIGHT" || action.name() == "UP" ||
-		action.name() == "DOWN")) {
-		m_player->getComponent<CInput>().dir = 0;
-	}*/
 }
 
 
 void Scene_Berzerk::spawnPlayer(sf::Vector2f pos) {
-
-	//m_player = m_entityManager.addEntity("player");
-
-	//sf::Vector2f boundingBoxOffset{ 0.f, 10.f }; // Moving the bounding box down a bit
-	//m_player->setBoundingBoxOffset(boundingBoxOffset);
-
-	//m_player->addComponent<CTransform>(pos);
-	//m_player->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
-	//m_player->addComponent<CInput>();
-	//m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
-	//m_player->addComponent<CState>("grounded");
 
 	m_player = m_entityManager.addEntity("player");
 
@@ -699,42 +410,17 @@ void Scene_Berzerk::spawnPlayer(sf::Vector2f pos) {
 	m_player->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
 	m_player->addComponent<CInput>();
 
-	if (m_player->getComponent<CInput>().dragonSpearCarried) {
+	if (m_player->getComponent<CPowerUps>().dragonSpearCarried) {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight"));
 	}
 	else {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
 	}
-
-	m_player->addComponent<CState>("grounded");
 }
 
-// spawn Enemy
-void Scene_Berzerk::spawnEnemy(const sf::Vector2f& initialPosition) {
-	auto enemy = m_entityManager.addEntity("enemy");
-
-	sf::Vector2f initialVelocity;
-
-	sf::Vector2f boundingBoxOffset{ 0.f, 5.f };
-	enemy->setBoundingBoxOffset(boundingBoxOffset);
-
-	enemy->addComponent<CTransform>(initialPosition, initialVelocity);
-	enemy->addComponent<CBoundingBox>(sf::Vector2f(80.f, 40.f));
-
-	enemy->addComponent<CState>("grounded");
-}
-
-void Scene_Berzerk::spawnEnemy2(const sf::Vector2f& initialPosition) {
-	auto enemy2 = m_entityManager.addEntity("enemy2");
-
-	sf::Vector2f initialVelocity;
-
-	if (initialPosition.x == 7 * m_gridSize.x && initialPosition.y == 2 * m_gridSize.y) {
-		initialVelocity = sf::Vector2f(-100, 0);
-	}
-	else {
-		initialVelocity = sf::Vector2f(100, 0);
-	}
+// spawn Enemies
+void Scene_Berzerk::spawnEnemy(const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity, float gridMin, float gridMax) {
+	auto enemy2 = m_entityManager.addEntity("enemy");
 
 	enemy2->addComponent<CTransform>(initialPosition, initialVelocity);
 	enemy2->addComponent<CBoundingBox>(sf::Vector2f(80.f, 40.f));
@@ -746,7 +432,7 @@ void Scene_Berzerk::spawnEnemy2(const sf::Vector2f& initialPosition) {
 		enemy2->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation.play();
 	}
 
-	enemy2->addComponent<CState>("grounded");
+	enemy2->addComponent<CScript>(gridMin, gridMax);
 }
 
 // spawn Dragon Spear
@@ -756,10 +442,14 @@ void Scene_Berzerk::spawnDragonSpear(const sf::Vector2f& initialPosition) {
 	dragonSpear->addComponent<CTransform>(initialPosition);
 	dragonSpear->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
 	dragonSpear->addComponent<CAnimation>(Assets::getInstance().getAnimation("dragonSpear"));
-	dragonSpear->addComponent<CState>("grounded");
 }
 
-
+void Scene_Berzerk::spawnPowerUp(const sf::Vector2f& initialPosition) {
+	auto powerUp = m_entityManager.addEntity("powerUp");
+	powerUp->addComponent<CTransform>(initialPosition);
+	powerUp->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
+	powerUp->addComponent<CAnimation>(Assets::getInstance().getAnimation("powerUp"));
+}
 
 sf::FloatRect Scene_Berzerk::getViewBounds() {
 	return sf::FloatRect();
@@ -773,11 +463,11 @@ void Scene_Berzerk::sCollisions() {
 	}
 
 	// player with tile
-	auto players = m_entityManager.getEntities("player");
-	auto tiles = m_entityManager.getEntities("Tile");
+	auto& players = m_entityManager.getEntities("player");
+	auto& tiles = m_entityManager.getEntities("Tile");
 
 	for (auto p : players) {
-		for (auto t : tiles) {
+		for (auto& t : tiles) {
 
 			auto overlap = Physics::getOverlap(p, t);
 			if (overlap.x > 0 && overlap.y > 0)
@@ -785,23 +475,15 @@ void Scene_Berzerk::sCollisions() {
 				auto prevOverlap = Physics::getOverlap(p, t);
 
 				auto& ptx = p->getComponent<CTransform>();
-				auto ttx = t->getComponent<CTransform>();
+				auto& ttx = t->getComponent<CTransform>();
 
 				// Collision with the y axis
 				if (prevOverlap.x > prevOverlap.y) {
 					if (ptx.prevPos.y < ttx.prevPos.y) {
 						p->getComponent<CTransform>().pos.y -= overlap.y;
-						/*std::cout << "Collision with tile\n";
-						std::cout << "PrevOverlap.x: " << prevOverlap.x << "\n";
-						std::cout << "PrevOverlap.y: " << prevOverlap.y << "\n";*/
 					}
 					else if (ptx.prevPos.y > ttx.prevPos.y) {
-						// 
-						//ptx.pos.y += overlap.y;
 						p->getComponent<CTransform>().pos.y += overlap.y;
-						/*std::cout << "Collision with 2 \n";
-						std::cout << "PrevOverlap.x: " << prevOverlap.x << "\n";
-						std::cout << "PrevOverlap.y: " << prevOverlap.y << "\n";*/
 					}
 
 				}
@@ -809,15 +491,9 @@ void Scene_Berzerk::sCollisions() {
 				else {
 					if (ptx.prevPos.x < ttx.prevPos.x) {
 						p->getComponent<CTransform>().pos.x -= overlap.x;
-						/*std::cout << "Collision with 3 \n";
-						std::cout << "PrevOverlap.x: " << prevOverlap.x << "\n";
-						std::cout << "PrevOverlap.y: " << prevOverlap.y << "\n";*/
 					}
 					else {
 						p->getComponent<CTransform>().pos.x += overlap.x;
-						/*std::cout << "Collision with 4 \n";
-						std::cout << "PrevOverlap.x: " << prevOverlap.x << "\n";
-						std::cout << "PrevOverlap.y: " << prevOverlap.y << "\n";*/
 					}
 				}
 			}
@@ -825,90 +501,54 @@ void Scene_Berzerk::sCollisions() {
 
 		// Player vs Enemies
 
-		auto enemies = m_entityManager.getEntities("enemy");
-		auto enemies2 = m_entityManager.getEntities("enemy2");
+		auto& enemies = m_entityManager.getEntities("enemy");
 
-		for (auto enemy : enemies) {
+		for (auto& enemy : enemies) {
 			if (checkCollision(*m_player, *enemy)) {
 				onPlayerCollision();
-				return; // Stop processing further collisions
-			}
-		}
-
-		for (auto enemy : enemies2) {
-			if (checkCollision(*m_player, *enemy)) {
-				onPlayerCollision();
-				return; // Stop processing further collisions
+				return;
 			}
 		}
 
 		// Player vs Dragon Spear
-		auto dragonSpears = m_entityManager.getEntities("dragonSpear");
+		auto& dragonSpears = m_entityManager.getEntities("dragonSpear");
 
-		//for (auto spear : dragonSpears) {
-		//	if (checkCollision(*m_player, *spear)) {
-		//		// Remove the dragon spear from the scene
-		//		spear->destroy();
-
-		//		// Change player animation based on collision direction
-		//		auto& playerTransform = m_player->getComponent<CTransform>();
-		//		auto& spearTransform = spear->getComponent<CTransform>();
-
-		//		if (playerTransform.pos.x < spearTransform.pos.x) {
-		//			m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight"));
-		//			std::cout << "Collision with spear right\n";
-		//		}
-		//		else if (playerTransform.pos.x > spearTransform.pos.x) {
-		//			m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearLeft"));
-		//			std::cout << "Collision with spear left\n";
-		//		}
-		//		else if (playerTransform.pos.y < spearTransform.pos.y) {
-		//			m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearDown"));
-		//			std::cout << "Collision with spear down\n";
-		//		}
-		//		else {
-		//			m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearUp"));
-		//			std::cout << "Collision with spear up\n";
-		//		}
-
-		//		// Additional actions after collision with dragon spear
-		//		// Code...
-
-		//		return; // Stop processing further collisions
-		//	}
-		//}
 		sf::Vector2f collisionDirection;
-		for (auto spear : dragonSpears) {
+		for (auto& spear : dragonSpears) {
 			if (checkCollision(*m_player, *spear)) {
 				// Remove the dragon spear from the scene
 				spear->destroy();
 
-				// Change player animation based on collision direction
 				auto& playerTransform = m_player->getComponent<CTransform>();
 				auto& spearTransform = spear->getComponent<CTransform>();
 
-				// Determine the direction of the collision between player and spear
 				sf::Vector2f collisionDirection = spearTransform.pos - playerTransform.pos;
-				// Normalize the collision direction vector
 				collisionDirection = normalize(collisionDirection);
 
-				//// Call the playerMovement2() function with the collision direction
-				//playerMovement2();
-
 				// Set the player state to 'dragonSpearCarried'
-				m_player->getComponent<CInput>().dragonSpearCarried = true;
+				m_player->getComponent<CPowerUps>().dragonSpearCarried = true;
 
-				// Call the playerMovement() function to handle movement with the spear
 				playerMovement();
 
-				// Additional actions after collision with dragon spear
-				// Code...
-
-				return; // Stop processing further collisions
+				return;
 			}
 		}
 
+		// Player vs Power Up
+		auto& powerUps = m_entityManager.getEntities("powerUp");
+		for (auto& powerUp : powerUps) {
+			if (checkCollision(*m_player, *powerUp)) {
+				powerUp->destroy();
 
+				// speed up the player 1.1 times
+				// get CTransform of player and multiply speed by 1.1
+				auto& playerTransform = m_player->getComponent<CTransform>();
+				// Continuar...
+
+
+				return;
+			}
+		}
 	}
 }
 
@@ -937,6 +577,8 @@ bool Scene_Berzerk::checkCollision(Entity& entity1, Entity& entity2) {
 void Scene_Berzerk::onPlayerCollision() {
 	SoundPlayer::getInstance().play("death", m_player->getComponent<CTransform>().pos);
 	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("die"));
+	// see the animation
+	m_player->getComponent<CAnimation>().animation.play();
 
 	// Deccrement life
 	Assets::getInstance().decrementLife(1);
@@ -955,10 +597,11 @@ void Scene_Berzerk::onPlayerCollision() {
 		}
 	}
 	else {
-		respawnPlayer();
-		respawnEnemies();
+		//respawnPlayer();
+		m_player->addComponent<CState>().state = "dead";
 	}
 }
+
 
 void Scene_Berzerk::respawnPlayer() {
 
@@ -970,34 +613,11 @@ void Scene_Berzerk::respawnPlayer() {
 	// Setting the player position to the initial position
 	m_player->getComponent<CTransform>().pos = initialPlayerPosition;
 
-	auto& playerState = m_player->getComponent<CState>().state;
-	playerState = "grounded";
+	/*auto& playerState = m_player->getComponent<CState>().state;
+	playerState = "grounded";*/
 
 	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
 }
-
-void Scene_Berzerk::respawnEnemies() {
-
-	auto enemies = m_entityManager.getEntities("enemy");
-	auto enemies2 = m_entityManager.getEntities("enemy2");
-
-	for (auto enemy : enemies) {
-		// Remove enemy from the scene
-		enemy->destroy();
-	}
-
-	for (auto enemy : enemies2) {
-		// Remove enemy from the scene
-		enemy->destroy();
-	}
-
-	// Respawn enemies
-	spawnEnemy(sf::Vector2f(17 * m_gridSize.x + m_gridSize.x / 2.0f, m_game->window().getSize().y - (2 * m_gridSize.y + m_gridSize.y / 2.0f)));
-
-	spawnEnemy2(sf::Vector2f(7 * m_gridSize.x + m_gridSize.x / 2.0f, m_game->window().getSize().y - (12 * m_gridSize.y + m_gridSize.y / 2.0f)));
-
-}
-
 
 void Scene_Berzerk::sUpdate(sf::Time dt) {
 	SoundPlayer::getInstance().removeStoppedSounds();
@@ -1008,7 +628,25 @@ void Scene_Berzerk::sUpdate(sf::Time dt) {
 
 	updateScoreText(); // update score text
 	updateLivesText();
-	updateEnemyChase();
+
+	/// consertar isto
+
+	//updateEnemyChase();
+	if (m_player->getComponent<CState>().state != "dead") {
+		updateEnemyChase();
+	}
+	// frose the enemy when the player is dead
+	else
+	{
+		auto& enemies = m_entityManager.getEntities("enemy");
+		for (auto& enemy : enemies) {
+			auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
+			// velocity of the enemy is 0
+			enemy->getComponent<CTransform>().vel = sf::Vector2f(0.f, 0.f);
+			enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyDown")).animation;
+			//enemyAnimation.stop();
+		}
+	}
 
 	sAnimation(dt);
 	sMovement(dt);
@@ -1019,42 +657,22 @@ void Scene_Berzerk::sUpdate(sf::Time dt) {
 
 void Scene_Berzerk::updateEnemyChase() {
 	auto playerPos = m_player->getComponent<CTransform>().pos;
-	auto enemies = m_entityManager.getEntities("enemy");
+	auto& enemies = m_entityManager.getEntities("enemy");
 
-	for (auto enemy : enemies) {
+	for (auto& enemy : enemies) {
 		auto& enemyTransform = enemy->getComponent<CTransform>();
 		auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
 
 		sf::Vector2f currentVelocity = enemyTransform.vel;
 
-		float enemyChaseSpeed = sqrt(currentVelocity.x * currentVelocity.x + currentVelocity.y * currentVelocity.y);
+		float enemyChaseSpeed = sqrt(currentVelocity.x * currentVelocity.x + currentVelocity.y * currentVelocity.y) * 1.005f;
 
-
-		//// Calculate direction vector towards the player
-		//sf::Vector2f direction = playerPos - enemyTransform.pos;
-		//direction = normalize(direction);
-
-		//// Set velocity based on the direction towards the player
-		//enemyTransform.vel = direction * enemyChaseSpeed;
-
-		//// Update enemy animation based on velocity direction
-		//if (direction.x > 0) {
-		//	enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation;
-		//}
-		//else {
-		//	enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation;
-		//}
-
-		//enemyAnimation.play();
-		// Check if player has reached the same vertical line as the enemy
 		if (playerPos.y >= enemyTransform.pos.y - m_gridSize.y / 2 &&
 			playerPos.y <= enemyTransform.pos.y + m_gridSize.y / 2) {
 
-			// Calculate direction vector towards the player
 			sf::Vector2f direction = playerPos - enemyTransform.pos;
 			direction = normalize(direction);
 
-			// Set velocity based on the direction towards the player
 			enemyTransform.vel = direction * enemyChaseSpeed;
 
 			// Update enemy animation based on velocity direction
@@ -1105,57 +723,22 @@ void Scene_Berzerk::winningMessage() {
 
 
 void Scene_Berzerk::sAnimation(sf::Time dt) {
-	//auto list = m_entityManager.getEntities();
-	//for (auto e : m_entityManager.getEntities()) {
-	//	// update all animations
-	//	if (e->hasComponent<CAnimation>()) {
-	//		auto& anim = e->getComponent<CAnimation>();
-	//		anim.animation.update(dt);
-	//		// do nothing if animation has ended
-	//	}
-	//}
 
-	auto list = m_entityManager.getEntities();
-	for (auto e : m_entityManager.getEntities()) {
+	auto& list = m_entityManager.getEntities();
+	for (auto& e : m_entityManager.getEntities()) {
+
 		// update all animations
 		if (e->hasComponent<CAnimation>()) {
 			auto& anim = e->getComponent<CAnimation>();
-
-			//// Check if the entity has CInput component
-			//if (e->hasComponent<CInput>()) {
-			//	auto& input = e->getComponent<CInput>();
-
-			//	// Check if the entity is the player and if the player is carrying the Dragon Spear
-			//	std::string currentState = "normal";
-			//	if (e == m_player && input.dragonSpearCarried) {
-			//		// Set animation state to carrying spear if the player is carrying the spear
-			//		currentState = "carrying_spear";
-			//	}
-
-			//	// Update the animation with the current state
-			//	anim.animation.update(dt, currentState);
-			//}
-			//else {
-			//	// Update the animation without state for entities without CInput component
-			//	anim.animation.update(dt, "");
-			//}
-			if (e->hasComponent<CAnimation>()) {
-				auto& anim = e->getComponent<CAnimation>();
-				if (e->hasComponent<CInput>()) {
-					auto& input = e->getComponent<CInput>();
-					anim.currentState = input.dragonSpearCarried ? "carrying_spear" : "normal";
-				}
-				anim.animation.update(dt);
-			}
+			anim.animation.update(dt);
 		}
 	}
 }
 
 
 void Scene_Berzerk::adjustPlayerPosition() {
-	auto center = m_worldView.getCenter();
+	auto& center = m_worldView.getCenter();
 	sf::Vector2f viewHalfSize = m_worldView.getSize() / 2.f;
-
 
 	auto left = center.x - viewHalfSize.x;
 	auto right = center.x + viewHalfSize.x;

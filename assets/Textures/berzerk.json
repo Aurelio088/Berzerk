@@ -1,6 +1,38 @@
 {
   "frames": [
     {
+      "filename": "powerUp (1).png",
+      "frame": { "x": 4, "y": 4, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    {
+      "filename": "powerUp (2).png",
+      "frame": { "x": 36, "y": 4, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    {
+      "filename": "powerUp (3).png",
+      "frame": { "x": 68, "y": 4, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    {
+      "filename": "powerUp (4).png",
+      "frame": { "x": 100, "y": 4, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    {
       "filename": "die (1).png",
       "frame": { "x": 17, "y": 1293, "w": 30, "h": 51 },
       "rotated": false,

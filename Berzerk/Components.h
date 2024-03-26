@@ -45,7 +45,6 @@ struct CSprite : public Component {
 	}
 };
 
-
 struct CTransform : public Component
 {
 
@@ -64,8 +63,6 @@ struct CTransform : public Component
 		: pos(p), prevPos(p), vel(v) {}
 
 };
-
-
 
 struct CBoundingBox : public Component
 {
@@ -92,25 +89,30 @@ struct CState : public Component {
 
 struct CInput : public Component
 {
-	/*enum dirs {
-		UP = 1 << 0,
-		DOWN = 1 << 1,
-		LEFT = 1 << 2,
-		RIGHT = 1 << 3
-	};*/
-
-	//unsigned char dir{ 0 };
-
 	bool up{ false };
 	bool down{ false };
 	bool left{ false };
 	bool right{ false };
 
-	bool dragonSpearCarried{ false };
-
-
 	CInput() = default;
 };
 
+struct CPowerUps : public Component
+{
+	CPowerUps() = default;
+
+	bool dragonSpearCarried{ false };
+	// component to hold the power up state
+	float velocity{ 0.f };
+};
+
+struct CScript : public Component
+{
+	CScript() = default;
+	CScript(float min, float max) : gridMin(min), gridMax(max) {}
+
+	float gridMin;
+	float gridMax;
+};
 
 #endif //BREAKOUT_COMPONENTS_H

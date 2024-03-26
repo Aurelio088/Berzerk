@@ -15,6 +15,7 @@ Texture Entities        ../assets/Textures/soldier.png
 Texture Enemy1		../assets/Textures/enemy1/enemy1_walk.png
 Texture Background	../assets/Textures/Tile.png
 Texture DragonSpear	../assets/Textures/dragonspear.png
+Texture PowerUp		../assets/Textures/powerup.png
 
 
 # Sprites
@@ -24,8 +25,8 @@ Sprite Title            Title 		0 0 	480 600
 
 #
 # SOUNDS
-Sound death             ../assets/Sound/froggerDie.wav
-Sound hop               ../assets/Sound/froggerMove.wav
+Sound death             ../assets/Sound/soldierDie.wav
+Sound attack            ../assets/Sound/soldierAttack.wav
 
 JSON                    ../assets/Textures/berzerk.json
 #JSON2				../assets/Textures/berzerk_enemy.json
@@ -37,7 +38,7 @@ Animation       up              Entities    8        no
 Animation       down            Entities    8        no
 Animation       left            Entities    8        no
 Animation       right           Entities    8        no
-Animation       die             Entities    8        no
+Animation       die             Entities    2        no
 
 Animation	    spearUp		  Entities    8        no
 Animation	    spearDown	  Entities    8        no
@@ -51,6 +52,7 @@ Animation       enemyRight      Enemy1 	  5        yes
 #Animation       enemyDie        Enemy1 	  5        no
 
 Animation       dragonSpear     DragonSpear 1        no
+Animation       powerUp         PowerUp     8        no
 
 
 

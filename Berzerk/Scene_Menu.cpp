@@ -12,7 +12,7 @@ Scene_Menu::Scene_Menu(GameEngine* gameEngine)
 	: Scene(gameEngine)
 {
 	init();
-	MusicPlayer::getInstance().play("menuTheme");
+	//MusicPlayer::getInstance().play("menuTheme");
 	MusicPlayer::getInstance().setVolume(30);
 
 	// Load the background textures
