@@ -58,6 +58,8 @@ private:
 	void            playerMovement();
 	void            adjustPlayerPosition();
 	void            checkPlayerState();
+	std::string		playAttackAnimation();
+
 	void	        registerActions();
 	void            spawnPlayer(sf::Vector2f pos);
 	void            spawnEnemy(

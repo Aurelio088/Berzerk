@@ -6,8 +6,6 @@ Font    Arial           ../assets/fonts/arial.ttf
 Font    main            ../assets/fonts/Sansation.ttf
 Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
 
-
-
 # Textures
 #Texture Background      ../assets/Textures/Brick.png
 Texture Title           ../assets/Textures/FroggerTitle.png
@@ -21,12 +19,17 @@ Texture PowerUp		../assets/Textures/powerup.png
 # Sprites
 Sprite Background       Background  	0 0  	480 600
 Sprite Title            Title 		0 0 	480 600
-#Sprite DragonSpear      DragonSpear		40 40 480 600
 
 #
 # SOUNDS
-Sound death             ../assets/Sound/soldierDie.wav
-Sound attack            ../assets/Sound/soldierAttack.wav
+Sound death            	 ../assets/Sound/soldierDie.wav
+Sound deathEnemy		 ../assets/Sound/enemy-death-grunt.wav
+Sound attack           	 ../assets/Sound/soldierAttack.wav
+#Sound enemyChase         ../assets/Sound/enemyChasing.wav
+Sound powerUp          	 ../assets/Sound/power-up.wav
+Sound pickUpSpear		 ../assets/Sound/dragonSpear-powerUp.wav
+Sound menuPick        	 ../assets/Sound/MENU-Pick.wav
+Sound menuSelect         ../assets/Sound/MENU-Select.wav
 
 JSON                    ../assets/Textures/berzerk.json
 #JSON2				../assets/Textures/berzerk_enemy.json
@@ -45,6 +48,11 @@ Animation	    spearDown	  Entities    8        no
 Animation	    spearLeft	  Entities    8        no
 Animation	    spearRight	  Entities    8        no
 
+Animation	    attackUp	  Entities    8        no
+Animation	    attackDown	  Entities    8        no
+Animation	    attackLeft	  Entities    8        no
+Animation	    attackRight	  Entities    8        no
+
 Animation       enemyUp         Enemy1  	  5        no
 Animation       enemyDown       Enemy1  	  5        no
 Animation       enemyLeft       Enemy1 	  5        yes
@@ -52,7 +60,7 @@ Animation       enemyRight      Enemy1 	  5        yes
 #Animation       enemyDie        Enemy1 	  5        no
 
 Animation       dragonSpear     DragonSpear 1        no
-Animation       powerUp         PowerUp     8        no
+Animation       powerUp         PowerUp     4        yes
 
 
 

@@ -44,15 +44,20 @@ void Animation::update(sf::Time dt) {
 		//	}
 		//}
 
-		if (m_currentFrame >= m_frames.size()) {
-			if (!m_isRepeating) {
-				m_currentFrame = 0;  // Reset to the first frame
-				m_playing = false;   // Stop the animation
-			}
-			else {
-				m_currentFrame = 0;  // Reset to the first frame for repetition
-			}
-		}
+		//if (m_currentFrame >= m_frames.size()) {
+		//	if (!m_isRepeating) {
+		//		m_currentFrame = 0;  // Reset to the first frame
+		//		m_playing = false;   // Stop the animation
+		//	}
+		//	else {
+		//		m_currentFrame = 0;  // Reset to the first frame for repetition
+		//	}
+		//}
+
+		if (m_currentFrame == m_frames.size() && !m_isRepeating)
+			return;  // on the last frame of non-repeating animaton, leave it
+		else
+			m_currentFrame = (m_currentFrame % m_frames.size());
 
 		m_sprite.setTextureRect(m_frames[m_currentFrame]);
 		centerOrigin(m_sprite);

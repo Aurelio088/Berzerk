@@ -2,6 +2,8 @@
 #include "Scene_Berzerk.h"
 #include <memory>
 #include "MusicPlayer.h"
+#include "SoundPlayer.h"
+#include "Scene_Credits.h"
 
 void Scene_Menu::onEnd()
 {
@@ -12,7 +14,7 @@ Scene_Menu::Scene_Menu(GameEngine* gameEngine)
 	: Scene(gameEngine)
 {
 	init();
-	//MusicPlayer::getInstance().play("menuTheme");
+	MusicPlayer::getInstance().play("menuTheme");
 	MusicPlayer::getInstance().setVolume(30);
 
 	// Load the background textures
@@ -28,8 +30,6 @@ Scene_Menu::Scene_Menu(GameEngine* gameEngine)
 	// Set the interval for the background change
 	m_backgroundChangeInterval = sf::seconds(0.5f);
 }
-
-
 
 void Scene_Menu::init()
 {
@@ -113,16 +113,35 @@ void Scene_Menu::sDoAction(const Command& action)
 		if (action.name() == "UP")
 		{
 			m_menuIndex = (m_menuIndex + m_menuStrings.size() - 1) % m_menuStrings.size();
+			SoundPlayer::getInstance().play("menuPick");
+
 		}
 		else if (action.name() == "DOWN")
 		{
 			m_menuIndex = (m_menuIndex + 1) % m_menuStrings.size();
+			SoundPlayer::getInstance().play("menuPick");
 		}
 		else if (action.name() == "PLAY")
 		{
+			SoundPlayer::getInstance().play("menuSelect");
+
+			// Setting up a delay before starting the game
+			sf::Clock delayClock;
+			while (delayClock.getElapsedTime().asSeconds() < 2.0f) {}
+
 			Assets::getInstance().reset();
 			m_game->changeScene("PLAY", std::make_shared<Scene_Berzerk>(m_game, m_levelPaths[m_menuIndex]));
 		}
+		/*else if (action.name() == "CREDITS") 
+		{
+			SoundPlayer::getInstance().play("menuSelect");
+
+			sf::Clock delayClock;
+			while (delayClock.getElapsedTime().asSeconds() < 2.0f) {}
+
+			Assets::getInstance().reset();
+			m_game->changeScene("CREDITS", std::make_shared<Scene_Credits>(m_game));
+		}*/
 		else if (action.name() == "QUIT")
 		{
 			onEnd();

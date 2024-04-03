@@ -57,9 +57,8 @@ Scene_Berzerk::Scene_Berzerk(GameEngine* gameEngine, const std::string& levelPat
 	// spawn power up (position 18, 2)
 	spawnPowerUp(sf::Vector2f(18 * m_gridSize.x, (600 - 2 * m_gridSize.y) - m_gridSize.y / 2));
 
-	//MusicPlayer::getInstance().play("gameTheme");
+	MusicPlayer::getInstance().play("gameTheme");
 	MusicPlayer::getInstance().setVolume(30);
-
 }
 
 void Scene_Berzerk::init(const std::string& path) {
@@ -96,6 +95,8 @@ void Scene_Berzerk::registerActions() {
 	registerAction(sf::Keyboard::Up, "UP");
 	registerAction(sf::Keyboard::S, "DOWN");
 	registerAction(sf::Keyboard::Down, "DOWN");
+	// space to attack
+	registerAction(sf::Keyboard::Space, "ATTACK");
 }
 
 void Scene_Berzerk::onEnd() {
@@ -112,6 +113,10 @@ void Scene_Berzerk::playerMovement() {
 	auto& animation = m_player->getComponent<CAnimation>().animation;
 	auto& pInput = m_player->getComponent<CInput>();
 	auto& pPowerUps = m_player->getComponent<CPowerUps>();
+	auto& state = m_player->getComponent<CState>();
+
+	// Define player speed
+	float playerSpeed = m_config.playerSpeed;
 
 	// Diagonal movements
 	if (pInput.up && pInput.left) {
@@ -119,6 +124,11 @@ void Scene_Berzerk::playerMovement() {
 		pv.y -= 1;
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearLeft" : "left";
+
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
 
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
@@ -130,6 +140,11 @@ void Scene_Berzerk::playerMovement() {
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearRight" : "right";
 
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
+
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
@@ -140,6 +155,11 @@ void Scene_Berzerk::playerMovement() {
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearLeft" : "left";
 
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
+
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
@@ -149,6 +169,11 @@ void Scene_Berzerk::playerMovement() {
 		pv.y += 1;
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearRight" : "right";
+
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
 
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
@@ -161,6 +186,11 @@ void Scene_Berzerk::playerMovement() {
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearLeft" : "left";
 
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
+
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
@@ -169,6 +199,11 @@ void Scene_Berzerk::playerMovement() {
 		pv.x += 1;
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearRight" : "right";
+
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
 
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
@@ -179,6 +214,11 @@ void Scene_Berzerk::playerMovement() {
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearUp" : "up";
 
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
+
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
@@ -188,16 +228,79 @@ void Scene_Berzerk::playerMovement() {
 
 		std::string animationName = pPowerUps.dragonSpearCarried ? "spearDown" : "down";
 
+		// If spearLeft and pInput.attack is true, then play the attack animation
+		if (pPowerUps.dragonSpearCarried && pInput.attack) {
+			animationName = playAttackAnimation();
+		}
+
+		if (animation.getName() != animationName)
+			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
+		animation.play();
+	}
+	else if (pInput.attack && pPowerUps.dragonSpearCarried)
+	{
+		std::string animationName = playAttackAnimation();
+
 		if (animation.getName() != animationName)
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
 
 	pv = normalize(pv);
-	m_player->getComponent<CTransform>().vel = m_config.playerSpeed * pv;
+	m_player->getComponent<CTransform>().vel = m_config.playerSpeed * pv * m_player->getComponent<CPowerUps>().velocity;
+}
+
+std::string Scene_Berzerk::playAttackAnimation()
+{
+	//std::string oldAnimation = m_player->getComponent<CAnimation>().animation.getName();
+	auto& animation = m_player->getComponent<CAnimation>().animation;
+	std::string oldAnimation = animation.getName();
+	if (!oldAnimation.contains("attack"))
+	{
+		/*oldAnimation.erase(0, 5);
+		return "attack" + oldAnimation;*/
+		oldAnimation.erase(0, 5);
+		std::string newAnimation = "attack" + oldAnimation;
+
+		sf::Vector2f newSize;
+		if (oldAnimation == "Down" || oldAnimation == "Up") {
+			newSize = sf::Vector2f(25.f, 80.f);
+		}
+		else if (oldAnimation == "Left" || oldAnimation == "Right") {
+			newSize = sf::Vector2f(80.f, 25.f);
+		}
+		else {
+			newSize = sf::Vector2f(25.f, 25.f);
+		}
+
+		// Update the size of the player bounding box
+		m_player->getComponent<CBoundingBox>().size = newSize;
+
+		// Set attack states
+		if (oldAnimation == "Down") {
+			m_player->getComponent<CState>().state = "attackDown";
+		}
+		else if (oldAnimation == "Up") {
+			m_player->getComponent<CState>().state = "attackUp";
+		}
+		else if (oldAnimation == "Left") {
+			m_player->getComponent<CState>().state = "attackLeft";
+		}
+		else if (oldAnimation == "Right") {
+			m_player->getComponent<CState>().state = "attackRight";
+		}
+
+		// play sound effect of attack
+		SoundPlayer::getInstance().play("attack", m_player->getComponent<CTransform>().pos);
+			
+		return newAnimation;
+	}
+
+	return oldAnimation;
 }
 
 void Scene_Berzerk::enemyMovement() {
+
 	auto& enemies = m_entityManager.getEntities("enemy");
 
 	for (auto& enemy : enemies)
@@ -359,6 +462,7 @@ void Scene_Berzerk::sDoAction(const Command& action) {
 		else if (action.name() == "RIGHT") { m_player->getComponent<CInput>().right = true; }
 		else if (action.name() == "UP") { m_player->getComponent<CInput>().up = true; }
 		else if (action.name() == "DOWN") { m_player->getComponent<CInput>().down = true; }
+		else if (action.name() == "ATTACK") { m_player->getComponent<CInput>().attack = true; }
 
 		else if (action.name() == "CARRY_SPEAR") { m_player->getComponent<CPowerUps>().dragonSpearCarried = true; }
 	}
@@ -394,6 +498,13 @@ void Scene_Berzerk::sDoAction(const Command& action) {
 				animation.stop();
 			}
 		}
+		else if (action.name() == "ATTACK") { 
+			m_player->getComponent<CInput>().attack = false; 
+			if (m_player->hasComponent<CAnimation>()) {
+				auto& animation = m_player->getComponent<CAnimation>().animation;
+				animation.stop();
+			}
+		}
 		else if (action.name() == "RELEASE_SPEAR") { m_player->getComponent<CPowerUps>().dragonSpearCarried = false; }
 	}
 }
@@ -409,6 +520,8 @@ void Scene_Berzerk::spawnPlayer(sf::Vector2f pos) {
 	m_player->addComponent<CTransform>(pos);
 	m_player->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
 	m_player->addComponent<CInput>();
+
+	m_player->addComponent<CState>().state = "alive";
 
 	if (m_player->getComponent<CPowerUps>().dragonSpearCarried) {
 		m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("spearRight"));
@@ -440,7 +553,7 @@ void Scene_Berzerk::spawnDragonSpear(const sf::Vector2f& initialPosition) {
 	auto dragonSpear = m_entityManager.addEntity("dragonSpear");
 
 	dragonSpear->addComponent<CTransform>(initialPosition);
-	dragonSpear->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
+	dragonSpear->addComponent<CBoundingBox>(sf::Vector2f(50.f, 50.f));
 	dragonSpear->addComponent<CAnimation>(Assets::getInstance().getAnimation("dragonSpear"));
 }
 
@@ -448,7 +561,7 @@ void Scene_Berzerk::spawnPowerUp(const sf::Vector2f& initialPosition) {
 	auto powerUp = m_entityManager.addEntity("powerUp");
 	powerUp->addComponent<CTransform>(initialPosition);
 	powerUp->addComponent<CBoundingBox>(sf::Vector2f(25.f, 25.f));
-	powerUp->addComponent<CAnimation>(Assets::getInstance().getAnimation("powerUp"));
+	powerUp->addComponent<CAnimation>(Assets::getInstance().getAnimation("powerUp")).animation.play();
 }
 
 sf::FloatRect Scene_Berzerk::getViewBounds() {
@@ -504,9 +617,21 @@ void Scene_Berzerk::sCollisions() {
 		auto& enemies = m_entityManager.getEntities("enemy");
 
 		for (auto& enemy : enemies) {
-			if (checkCollision(*m_player, *enemy)) {
+			/*if (checkCollision(*m_player, *enemy)) {
 				onPlayerCollision();
-				return;
+			}*/
+			if (checkCollision(*m_player, *enemy)) {
+				if (m_player->getComponent<CState>().state == "attackUp" ||
+					m_player->getComponent<CState>().state == "attackDown" ||
+					m_player->getComponent<CState>().state == "attackLeft" ||
+					m_player->getComponent<CState>().state == "attackRight") {
+
+					SoundPlayer::getInstance().play("deathEnemy", m_player->getComponent<CTransform>().pos);
+					enemy->destroy();
+				}
+				else {
+					onPlayerCollision();
+				}
 			}
 		}
 
@@ -516,6 +641,10 @@ void Scene_Berzerk::sCollisions() {
 		sf::Vector2f collisionDirection;
 		for (auto& spear : dragonSpears) {
 			if (checkCollision(*m_player, *spear)) {
+
+				// Play the sound effect
+				SoundPlayer::getInstance().play("pickUpSpear", m_player->getComponent<CTransform>().pos);
+
 				// Remove the dragon spear from the scene
 				spear->destroy();
 
@@ -529,8 +658,6 @@ void Scene_Berzerk::sCollisions() {
 				m_player->getComponent<CPowerUps>().dragonSpearCarried = true;
 
 				playerMovement();
-
-				return;
 			}
 		}
 
@@ -538,15 +665,49 @@ void Scene_Berzerk::sCollisions() {
 		auto& powerUps = m_entityManager.getEntities("powerUp");
 		for (auto& powerUp : powerUps) {
 			if (checkCollision(*m_player, *powerUp)) {
+				SoundPlayer::getInstance().play("powerUp", m_player->getComponent<CTransform>().pos);
 				powerUp->destroy();
 
-				// speed up the player 1.1 times
-				// get CTransform of player and multiply speed by 1.1
-				auto& playerTransform = m_player->getComponent<CTransform>();
-				// Continuar...
+				auto& playerPowerUps = m_player->getComponent<CPowerUps>();
+				playerPowerUps.velocity++;
+			}
+		}
+	}
 
+	// Enemies vs Tiles
+	auto& enemies = m_entityManager.getEntities("enemy");
 
-				return;
+	for (auto& enemy : enemies)
+	{
+		for (auto& t : tiles) {
+
+			auto overlap = Physics::getOverlap(enemy, t);
+			if (overlap.x > 0 && overlap.y > 0)
+			{
+				auto prevOverlap = Physics::getOverlap(enemy, t);
+
+				auto& ptx = enemy->getComponent<CTransform>();
+				auto& ttx = t->getComponent<CTransform>();
+
+				// Collision with the y axis
+				if (prevOverlap.x > prevOverlap.y) {
+					if (ptx.prevPos.y < ttx.prevPos.y) {
+						enemy->getComponent<CTransform>().pos.y -= overlap.y;
+					}
+					else if (ptx.prevPos.y > ttx.prevPos.y) {
+						enemy->getComponent<CTransform>().pos.y += overlap.y;
+					}
+
+				}
+				// Collision with the x axis
+				else {
+					if (ptx.prevPos.x < ttx.prevPos.x) {
+						enemy->getComponent<CTransform>().pos.x -= overlap.x;
+					}
+					else {
+						enemy->getComponent<CTransform>().pos.x += overlap.x;
+					}
+				}
 			}
 		}
 	}
@@ -577,29 +738,34 @@ bool Scene_Berzerk::checkCollision(Entity& entity1, Entity& entity2) {
 void Scene_Berzerk::onPlayerCollision() {
 	SoundPlayer::getInstance().play("death", m_player->getComponent<CTransform>().pos);
 	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("die"));
-	// see the animation
 	m_player->getComponent<CAnimation>().animation.play();
 
-	// Deccrement life
-	Assets::getInstance().decrementLife(1);
+	//// Deccrement life
+	//Assets::getInstance().decrementLife(1);
 
-	// Decrement score
-	Assets::getInstance().decrementScore(10);
+	//// Decrement score
+	//Assets::getInstance().decrementScore(10);
 
-
-	updateLivesText();
-
-	if (Assets::getInstance().getLife() == 0) {
-		m_player->addComponent<CState>().state = "dead";
-		MusicPlayer::getInstance().stop();
-		if (!m_player->getComponent<CAnimation>().animation.hasEnded()) {
-			onEnd();
-		}
+	for (auto& e : m_entityManager.getEntities("enemy"))
+	{
+		e->getComponent<CAnimation>().animation.stop();
 	}
-	else {
-		//respawnPlayer();
-		m_player->addComponent<CState>().state = "dead";
-	}
+
+	m_player->addComponent<CState>().state = "dead";
+
+	//updateLivesText();
+
+	//if (Assets::getInstance().getLife() == 0) {
+	//	m_player->addComponent<CState>().state = "dead";
+	//	MusicPlayer::getInstance().stop();
+	//	if (!m_player->getComponent<CAnimation>().animation.hasEnded()) {
+	//		onEnd();
+	//	}
+	//}
+	//else {
+	//	//respawnPlayer();
+	//	m_player->addComponent<CState>().state = "dead";
+	//}
 }
 
 
@@ -612,11 +778,12 @@ void Scene_Berzerk::respawnPlayer() {
 
 	// Setting the player position to the initial position
 	m_player->getComponent<CTransform>().pos = initialPlayerPosition;
+	m_player->getComponent<CTransform>().vel = { 0, 0 };
 
-	/*auto& playerState = m_player->getComponent<CState>().state;
-	playerState = "grounded";*/
-
+	m_player->addComponent<CState>();
 	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("right"));
+
+	m_player->addComponent<CState>().state = "alive";
 }
 
 void Scene_Berzerk::sUpdate(sf::Time dt) {
@@ -626,29 +793,25 @@ void Scene_Berzerk::sUpdate(sf::Time dt) {
 	if (m_isPaused)
 		return;
 
-	updateScoreText(); // update score text
-	updateLivesText();
+	//updateScoreText(); // update score text
+	//updateLivesText();
+
+	sAnimation(dt);
+
+	if (m_player->hasComponent<CState>() && m_player->getComponent<CState>().state == "dead") {
+
+		if (m_player->getComponent<CAnimation>().animation.hasEnded()) {
+			respawnPlayer();
+			for (auto& e : m_entityManager.getEntities("enemy")) {
+				e->getComponent<CAnimation>().animation.play();
+			}			
+		}
+		return; 
+	}
 
 	/// consertar isto
 
-	//updateEnemyChase();
-	if (m_player->getComponent<CState>().state != "dead") {
-		updateEnemyChase();
-	}
-	// frose the enemy when the player is dead
-	else
-	{
-		auto& enemies = m_entityManager.getEntities("enemy");
-		for (auto& enemy : enemies) {
-			auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
-			// velocity of the enemy is 0
-			enemy->getComponent<CTransform>().vel = sf::Vector2f(0.f, 0.f);
-			enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyDown")).animation;
-			//enemyAnimation.stop();
-		}
-	}
-
-	sAnimation(dt);
+	updateEnemyChase();
 	sMovement(dt);
 	adjustPlayerPosition();
 	checkPlayerState();
@@ -676,14 +839,24 @@ void Scene_Berzerk::updateEnemyChase() {
 			enemyTransform.vel = direction * enemyChaseSpeed;
 
 			// Update enemy animation based on velocity direction
+			auto& animation = enemy->getComponent<CAnimation>().animation;
+			std::string animationName;
+
+			
 			if (direction.x > 0) {
-				enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation;
+				animationName = "enemyRight";
+				// Play chase sound
+				//SoundPlayer::getInstance().play("enemyChase", m_player->getComponent<CTransform>().pos);
 			}
 			else {
-				enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation;
+				animationName = "enemyLeft";
+				// Play chase sound
+				//SoundPlayer::getInstance().play("enemyChase", m_player->getComponent<CTransform>().pos);
 			}
 
-			enemyAnimation.play();
+			if (animation.getName() != animationName)
+				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
+			animation.play();
 		}
 	}
 }

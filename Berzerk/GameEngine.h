@@ -42,6 +42,7 @@ public:
 	void				run();
 	void				quitLevel();
 	void				backLevel();
+	void				goToCreditsScene();
 
 	sf::RenderWindow& window();
 

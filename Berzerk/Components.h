@@ -93,6 +93,7 @@ struct CInput : public Component
 	bool down{ false };
 	bool left{ false };
 	bool right{ false };
+	bool attack{ false };
 
 	CInput() = default;
 };
@@ -103,7 +104,7 @@ struct CPowerUps : public Component
 
 	bool dragonSpearCarried{ false };
 	// component to hold the power up state
-	float velocity{ 0.f };
+	float velocity{ 1.0f };
 };
 
 struct CScript : public Component

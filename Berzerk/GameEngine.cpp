@@ -2,6 +2,7 @@
 #include "Assets.h"
 #include "Scene_Berzerk.h"
 #include "Scene_Menu.h"
+#include "Scene_Credits.h"
 #include "Command.h"
 #include <fstream>
 #include <memory>
@@ -29,6 +30,8 @@ void GameEngine::init(const std::string& path)
 	m_statisticsText.setCharacterSize(15);
 
 	changeScene("MENU", std::make_shared<Scene_Menu>(this));
+	
+
 }
 
 void GameEngine::loadConfigFromFile(const std::string& path, unsigned int& width, unsigned int& height) const {
@@ -159,4 +162,8 @@ sf::Vector2f GameEngine::windowSize() const {
 bool GameEngine::isRunning()
 {
 	return (m_running && m_window.isOpen());
+}
+
+void GameEngine::goToCreditsScene() {
+	//changeScene("CREDITS", std::make_shared<Scene_Credits>(this));
 }
