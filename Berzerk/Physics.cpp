@@ -12,7 +12,6 @@ sf::Vector2f Physics::getOverlap(std::shared_ptr<Entity> a, std::shared_ptr<Enti
     auto btx = b->getComponent<CTransform>();
     auto bbb = b->getComponent<CBoundingBox>();
 
-
     if (abb.has && bbb.has)
     {
         float dx = std::abs((atx.pos.x + abb.offset.x) - (btx.pos.x + bbb.offset.x));

@@ -11,6 +11,7 @@ Font    Arcade          ../assets/fonts/arcadeclassic.regular.ttf
 Texture Title           ../assets/Textures/FroggerTitle.png
 Texture Entities        ../assets/Textures/soldier.png
 Texture Enemy1		../assets/Textures/enemy1/enemy1_walk.png
+Texture Enemy2		../assets/Textures/enemy2/enemy2_walk.png
 Texture Background	../assets/Textures/Tile.png
 Texture DragonSpear	../assets/Textures/dragonspear.png
 Texture PowerUp		../assets/Textures/powerup.png
@@ -25,15 +26,13 @@ Sprite Title            Title 		0 0 	480 600
 Sound death            	 ../assets/Sound/soldierDie.wav
 Sound deathEnemy		 ../assets/Sound/enemy-death-grunt.wav
 Sound attack           	 ../assets/Sound/soldierAttack.wav
-#Sound enemyChase         ../assets/Sound/enemyChasing.wav
+Sound enemyChase         ../assets/Sound/enemyChasing.wav
 Sound powerUp          	 ../assets/Sound/power-up.wav
 Sound pickUpSpear		 ../assets/Sound/dragonSpear-powerUp.wav
 Sound menuPick        	 ../assets/Sound/MENU-Pick.wav
 Sound menuSelect         ../assets/Sound/MENU-Select.wav
 
 JSON                    ../assets/Textures/berzerk.json
-#JSON2				../assets/Textures/berzerk_enemy.json
-
 
 #
 #  Animation    Name            Texture     Speed   Repeats
@@ -57,7 +56,11 @@ Animation       enemyUp         Enemy1  	  5        no
 Animation       enemyDown       Enemy1  	  5        no
 Animation       enemyLeft       Enemy1 	  5        yes
 Animation       enemyRight      Enemy1 	  5        yes
-#Animation       enemyDie        Enemy1 	  5        no
+
+Animation       enemy2Up        Enemy2  	  5        no
+Animation       enemy2Down      Enemy2  	  5        no
+Animation       enemy2Left      Enemy2 	  5        yes
+Animation       enemy2Right     Enemy2 	  5        yes
 
 Animation       dragonSpear     DragonSpear 1        no
 Animation       powerUp         PowerUp     4        yes

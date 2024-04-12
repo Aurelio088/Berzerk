@@ -15,8 +15,8 @@
 
 
 struct LevelConfig {
-	float       playerSpeed{ 100.f };
-	float       enemySpeed{ 100.f };
+	float       playerSpeed{ 100.f };													// Added by Aurelio Rodrigues
+	float       enemySpeed{ 100.f };													// Added by Aurelio Rodrigues
 };
 
 class Scene_Berzerk : public Scene {
@@ -25,24 +25,19 @@ private:
 	sf::View        m_worldView;
 	sf::FloatRect   m_worldBounds;
 
-	sPtrEntt        m_grid{ nullptr };							// Added by Aurelio Rodrigues
+	sPtrEntt        m_grid{ nullptr };													// Added by Aurelio Rodrigues
 
 	LevelConfig     m_config;
-	sf::Text		m_scoreText;								// Added by Aurelio Rodrigues
-	sf::Text		m_livesText;								// Added by Aurelio Rodrigues
-	sf::Text		m_endText;									// Added by Aurelio Rodrigues
 
-	sf::Font        m_font;										// Added by Aurelio Rodrigues
+	sf::Font        m_font;																// Added by Aurelio Rodrigues
 
 	bool			m_drawTextures{ true };
-	bool			m_drawAABB{ false };
-	bool			m_drawGrid{ false };
-	const Vector2f	m_gridSize{ 40, 40 };
-
+	bool			m_drawAABB{ false };												
+	bool			m_drawGrid{ false };												
+	const Vector2f	m_gridSize{ 40, 40 };												// Added by Aurelio Rodrigues
 
 	int             m_score{ 0 };
 	int				m_lillyPadsOccupied = 0;
-
 
 	//systems
 	void            sMovement(sf::Time dt);
@@ -61,31 +56,22 @@ private:
 	std::string		playAttackAnimation();
 
 	void	        registerActions();
-	void            spawnPlayer(sf::Vector2f pos);
+	void            spawnPlayer(sf::Vector2f pos);										// Added by Aurelio Rodrigues
 	void            spawnEnemy(
 						const sf::Vector2f& initialPosition,
 						const sf::Vector2f& initialVelocity,
 						float gridMin,
-						float gridMax);										// Added by Aurelio Rodrigues
-	void			spawnDragonSpear(const sf::Vector2f& initialPosition);						// Added by Aurelio Rodrigues
-	void			spawnPowerUp(const sf::Vector2f& initialPosition);
+						float gridMax,
+						const std::string& name);										// Added by Aurelio Rodrigues
+	void			spawnDragonSpear(const sf::Vector2f& initialPosition);				// Added by Aurelio Rodrigues
+	void			spawnPowerUp(const sf::Vector2f& initialPosition);					// Added by Aurelio Rodrigues
 
 
 	// Adicionado por mim
-	void			enemyMovement();							// Added by Aurelio Rodrigues
-
-	void            updateScoreText(); 							// Added by Aurelio Rodrigues
-	void            updateLivesText(); 							// Added by Aurelio Rodrigues
-	void            winningMessage(); 							// Added by Aurelio Rodrigues
-
-	void 		    respawnPlayer();
-	void 		    onPlayerCollision(); 						// Added by Aurelio Rodrigues
-
-	bool 		    checkCollision(Entity& entity1, Entity& entity2); // Added by Aurelio Rodrigues
-	void			updateEnemyChase();									// Added by Aurelio Rodrigues
-
-
-	// FIM Adicionado por mim
+	void			enemyMovement();													// Added by Aurelio Rodrigues
+	void 		    respawnPlayer();													// Added by Aurelio Rodrigues
+	void 		    onPlayerCollision(); 												// Added by Aurelio Rodrigues
+	bool 		    checkCollision(Entity& entity1, Entity& entity2);					// Added by Aurelio Rodrigues
 
 	void            init(const std::string& path);
 	void            loadLevel(const std::string& path);
@@ -98,10 +84,6 @@ public:
 	void		  update(sf::Time dt) override;
 	void		  sDoAction(const Command& command) override;
 	void		  sRender() override;
-
-
 };
-
-
 
 #endif //BREAKOUT_SCENE_BREAKOUT_H

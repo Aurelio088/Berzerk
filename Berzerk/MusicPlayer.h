@@ -32,12 +32,10 @@ public:
     void							setPaused(bool paused);
     void							setVolume(float volume);
 
-
 private:
     sf::Music						m_music;
     std::map<String, String>	    m_filenames;
     float							m_volume{25};
 };
-
 
 #endif //SFMLCLASS_MUSICPLAYER_H

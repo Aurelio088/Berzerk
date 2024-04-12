@@ -11,7 +11,6 @@
 #include <cmath>
 #include <stdexcept>
 
-
 namespace {
     // Sound coordinate system, point of view of a player in front of the screen:
     // X = left; Y = up; Z = back (out of the screen);
@@ -22,23 +21,19 @@ namespace {
     const float MinDistance3D = std::sqrt(MinDistance2D * MinDistance2D + ListenerZ * ListenerZ);
 }
 
-
 SoundPlayer::SoundPlayer() {
     // Listener points towards the screen (default in SFML)
     sf::Listener::setDirection(0.f, 0.f, -1.f);
 }
-
 
 SoundPlayer &SoundPlayer::getInstance() {
     static SoundPlayer instance;
     return instance;
 }
 
-
 void SoundPlayer::play(String effect) {
     play(effect, getListnerPosition());
 }
-
 
 void SoundPlayer::play(String effect, sf::Vector2f position) {
     m_sounds.push_back(sf::Sound());
@@ -53,18 +48,15 @@ void SoundPlayer::play(String effect, sf::Vector2f position) {
     sound.play();
 }
 
-
 void SoundPlayer::removeStoppedSounds() {
     m_sounds.remove_if([](const sf::Sound &s) {
         return s.getStatus() == sf::Sound::Stopped;
     });
 }
 
-
 void SoundPlayer::setListnerPosition(sf::Vector2f position) {
     sf::Listener::setPosition(position.x, -position.y, ListenerZ);
 }
-
 
 void SoundPlayer::setListnerDirection(sf::Vector2f position) {
     // SFML default listner direction is (0,0,-1)
@@ -76,8 +68,6 @@ sf::Vector2f SoundPlayer::getListnerPosition() const {
     return sf::Vector2f(pos.x, -pos.y);
 }
 
-
 bool SoundPlayer::isEmpty() const {
     return m_sounds.empty();
 }
-

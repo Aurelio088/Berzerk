@@ -837,6 +837,262 @@
       "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 50 },
       "sourceSize": { "w": 95, "h": 50 }
     },
+    {
+      "filename": "enemy2Left (1).png",
+      "frame": { "x": 236, "y": 264, "w": 95, "h": 53 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 53 },
+      "sourceSize": { "w": 95, "h": 53 }
+    },
+    {
+      "filename": "enemy2Left (2).png",
+      "frame": { "x": 425, "y": 264, "w": 90, "h": 53 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 53 },
+      "sourceSize": { "w": 90, "h": 53 }
+    },
+    {
+      "filename": "enemy2Left (3).png",
+      "frame": { "x": 616, "y": 264, "w": 90, "h": 54 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 54 },
+      "sourceSize": { "w": 90, "h": 54 }
+    },
+    {
+      "filename": "enemy2Left (4).png",
+      "frame": { "x": 1002, "y": 264, "w": 90, "h": 55 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 55 },
+      "sourceSize": { "w": 90, "h": 55 }
+    },
+    {
+      "filename": "enemy2Left (5).png",
+      "frame": { "x": 1198, "y": 264, "w": 90, "h": 55 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 55 },
+      "sourceSize": { "w": 90, "h": 55 }
+    },
+    {
+      "filename": "enemy2Left (6).png",
+      "frame": { "x": 1390, "y": 264, "w": 90, "h": 55 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 55 },
+      "sourceSize": { "w": 90, "h": 55 }
+    },
+    {
+      "filename": "enemy2Left (7).png",
+      "frame": { "x": 43, "y": 265, "w": 95, "h": 53 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 53 },
+      "sourceSize": { "w": 95, "h": 53 }
+    },
+    {
+      "filename": "enemy2Left (8).png",
+      "frame": { "x": 808, "y": 265, "w": 90, "h": 54 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 54 },
+      "sourceSize": { "w": 90, "h": 54 }
+    },
+    {
+      "filename": "enemy2Right (1).png",
+      "frame": { "x": 245, "y": 647, "w": 95, "h": 54 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 54 },
+      "sourceSize": { "w": 95, "h": 54 }
+    },
+    {
+      "filename": "enemy2Right (2).png",
+      "frame": { "x": 445, "y": 647, "w": 90, "h": 54 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 54 },
+      "sourceSize": { "w": 90, "h": 54 }
+    },
+    {
+      "filename": "enemy2Right (3).png",
+      "frame": { "x": 638, "y": 647, "w": 90, "h": 55 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 55 },
+      "sourceSize": { "w": 90, "h": 55 }
+    },
+    {
+      "filename": "enemy2Right (4).png",
+      "frame": { "x": 1020, "y": 647, "w": 90, "h": 56 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 56 },
+      "sourceSize": { "w": 90, "h": 56 }
+    },
+    {
+      "filename": "enemy2Right (5).png",
+      "frame": { "x": 1208, "y": 647, "w": 90, "h": 56 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 56 },
+      "sourceSize": { "w": 90, "h": 56 }
+    },
+    {
+      "filename": "enemy2Right (6).png",
+      "frame": { "x": 1400, "y": 647, "w": 90, "h": 56 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 56 },
+      "sourceSize": { "w": 90, "h": 56 }
+    },
+    {
+      "filename": "enemy2Right (7).png",
+      "frame": { "x": 54, "y": 648, "w": 95, "h": 54 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 54 },
+      "sourceSize": { "w": 95, "h": 54 }
+    },
+    {
+      "filename": "enemy2Right (8).png",
+      "frame": { "x": 830, "y": 648, "w": 90, "h": 55 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 55 },
+      "sourceSize": { "w": 90, "h": 55 }
+    },
+    {
+      "filename": "enemy2Up (1).png",
+      "frame": { "x": 43, "y": 76, "w": 95, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 50 },
+      "sourceSize": { "w": 95, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (2).png",
+      "frame": { "x": 235, "y": 76, "w": 95, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 50 },
+      "sourceSize": { "w": 95, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (3).png",
+      "frame": { "x": 623, "y": 76, "w": 90, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 50 },
+      "sourceSize": { "w": 90, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (4).png",
+      "frame": { "x": 815, "y": 76, "w": 90, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 50 },
+      "sourceSize": { "w": 90, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (5).png",
+      "frame": { "x": 1007, "y": 76, "w": 90, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 50 },
+      "sourceSize": { "w": 90, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (6).png",
+      "frame": { "x": 430, "y": 77, "w": 90, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 50 },
+      "sourceSize": { "w": 90, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (7).png",
+      "frame": { "x": 1195, "y": 77, "w": 95, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 50 },
+      "sourceSize": { "w": 95, "h": 50 }
+    },
+    {
+      "filename": "enemy2Up (8).png",
+      "frame": { "x": 1387, "y": 77, "w": 95, "h": 50 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 50 },
+      "sourceSize": { "w": 95, "h": 50 }
+    },
+    {
+      "filename": "enemy2Down (1).png",
+      "frame": { "x": 47, "y": 459, "w": 95, "h": 51 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 51 },
+      "sourceSize": { "w": 95, "h": 51 }
+    },
+    {
+      "filename": "enemy2Down (2).png",
+      "frame": { "x": 239, "y": 459, "w": 95, "h": 52 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 52 },
+      "sourceSize": { "w": 95, "h": 52 }
+    },
+    {
+      "filename": "enemy2Down (3).png",
+      "frame": { "x": 626, "y": 459, "w": 90, "h": 52 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 52 },
+      "sourceSize": { "w": 90, "h": 52 }
+    },
+    {
+      "filename": "enemy2Down (4).png",
+      "frame": { "x": 819, "y": 459, "w": 90, "h": 51 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 51 },
+      "sourceSize": { "w": 90, "h": 51 }
+    },
+    {
+      "filename": "enemy2Down (5).png",
+      "frame": { "x": 1011, "y": 459, "w": 90, "h": 52 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 52 },
+      "sourceSize": { "w": 90, "h": 52 }
+    },
+    {
+      "filename": "enemy2Down (6).png",
+      "frame": { "x": 434, "y": 460, "w": 90, "h": 51 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 90, "h": 51 },
+      "sourceSize": { "w": 90, "h": 51 }
+    },
+    {
+      "filename": "enemy2Down (7).png",
+      "frame": { "x": 1199, "y": 460, "w": 95, "h": 51 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 51 },
+      "sourceSize": { "w": 95, "h": 51 }
+    },
+    {
+      "filename": "enemy2Down (8).png",
+      "frame": { "x": 1391, "y": 460, "w": 95, "h": 51 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 95, "h": 51 },
+      "sourceSize": { "w": 95, "h": 51 }
+    },
 
     {
       "filename": "dragonSpear",

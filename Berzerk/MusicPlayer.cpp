@@ -5,7 +5,6 @@
 #include "MusicPlayer.h"
 #include <stdexcept>
 
-
 MusicPlayer::MusicPlayer() {
 	m_filenames["menuTheme"] = "../assets/Music/BerzerkMenu_The_First_Knight.flac";
 	m_filenames["gameTheme"] = "../assets/Music/BerzerkTheme_Conjoined_Machine.flac";
@@ -20,7 +19,6 @@ MusicPlayer& MusicPlayer::getInstance() {
 	return instance;
 }
 
-
 void MusicPlayer::play(String theme) {
 	if (!m_music.openFromFile(m_filenames[theme]))
 		throw std::runtime_error("Music could not open file");
@@ -30,11 +28,9 @@ void MusicPlayer::play(String theme) {
 	m_music.play();
 }
 
-
 void MusicPlayer::stop() {
 	m_music.stop();
 }
-
 
 void MusicPlayer::setPaused(bool paused) {
 	if (paused)
@@ -42,7 +38,6 @@ void MusicPlayer::setPaused(bool paused) {
 	else
 		m_music.play();
 }
-
 
 void MusicPlayer::setVolume(float volume) {
 	m_volume = volume;

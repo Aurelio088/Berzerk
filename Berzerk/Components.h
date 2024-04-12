@@ -5,13 +5,11 @@
 #ifndef BREAKOUT_COMPONENTS_H
 #define BREAKOUT_COMPONENTS_H
 
-
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include "Utilities.h"
 #include "Animation.h"
 #include <bitset>
-
 
 struct Component
 {
@@ -19,14 +17,12 @@ struct Component
 	Component() = default;
 };
 
-
 struct CAnimation : public Component {
 	Animation   animation;
 	std::string currentState;
 
 	CAnimation() = default;
 	CAnimation(const Animation& a) : animation(a) {}
-
 };
 
 struct CSprite : public Component {
@@ -61,7 +57,6 @@ struct CTransform : public Component
 	CTransform(const sf::Vector2f& p) : pos(p) {}
 	CTransform(const sf::Vector2f& p, const sf::Vector2f& v)
 		: pos(p), prevPos(p), vel(v) {}
-
 };
 
 struct CBoundingBox : public Component
@@ -84,7 +79,6 @@ struct CState : public Component {
 
 	CState() = default;
 	CState(const std::string& s) : state(s) {}
-
 };
 
 struct CInput : public Component
@@ -103,17 +97,27 @@ struct CPowerUps : public Component
 	CPowerUps() = default;
 
 	bool dragonSpearCarried{ false };
-	// component to hold the power up state
+	bool powerUpCollected{ false };
 	float velocity{ 1.0f };
 };
 
 struct CScript : public Component
 {
 	CScript() = default;
-	CScript(float min, float max) : gridMin(min), gridMax(max) {}
+	CScript(float min, float max, float patrol) : gridMin(min), gridMax(max), patrolY(patrol) {}
 
 	float gridMin;
 	float gridMax;
+	float patrolY;
+	float oldVelX;
+};
+
+struct CString : public Component
+{
+	CString() = default;
+	CString(const std::string& str) : str(str) {}
+
+	std::string str;
 };
 
 #endif //BREAKOUT_COMPONENTS_H

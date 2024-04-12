@@ -2,38 +2,43 @@
 
 ## Executive Summary
 
-Berzerk is a classic arcade game where you run around shooting robots, trying not to get hit. The goal is to stay alive and go through as many rooms as you can. Easy to play but progressively challenging, Berzerk is for old-school gaming enthusiasts who enjoy a tough, nostalgic experience. The game keeps changing each time you play, offering simple graphics with a basic grid for that classic arcade look. Berzerk brings back memories of the golden arcade era, providing a simple, tough, and nostalgic gaming adventure.
+This is my version of the classic arcade game Berzerk, launched for Atari in the early 80's. The game brings a fun twist to the classics. Here, the player is a soldier with a special dragon spear to fight enemies. These bad guys also have dragon spears and will chase the player if they get too close.
+
+The player can also pick up items that make them move faster. The goal is to get through mazes, beat the enemies, and grab items to go to the next level.
 
 ## Game Description
 
 ### Overview
 
-Berzerk immerses players in an action-packed journey through dynamic rooms filled with menacing robots. Developed in the arcade era, this classic run-and-gun game combines simplicity with escalating difficulty, catering to retro gaming enthusiasts, arcade shooter fans, and those seeking an adrenaline rush. The maze layout changes with each playthrough, introducing an element of unpredictability. Berzerk stands as a testament to the enduring appeal of retro gaming experiences.
+In this new version of Berzerk, you play as a soldier who battles through mazes using a powerful dragon spear. Your enemies are monsters armed with their spears too, and they will chase you if you get close. As you navigate the mazes, you can collect items to speed up your movement. The aim is to make it through each maze, defeat the monsters, collect items, and move on to the next scene. It's a simple yet thrilling experience for anyone who enjoys fast-paced action and strategic gameplay.
 
 ### The Quest
 
-The quest revolves around the player's survival in a maze-like structure infested with aggressive robots. Navigating through challenging rooms, eliminating robots, and avoiding obstacles are key aspects. The game employs a level-based structure, with each stage introducing more formidable adversaries and intricate mazes. Rewards lie in the challenge itself, providing a sense of accomplishment as players progress through levels. The final objective is to survive as long as possible, striving for a higher score and a coveted spot on the game's leaderboard.
+Your mission is to stay alive while making your way through mazes filled with enemy monsters. Fighting off these foes, moving quickly through tricky spots, and not getting caught are all part of the adventure. Each level brings tougher monsters and more complex mazes. The real reward is getting through these challenges. Keep going to beat your high score and earn a top place on the leaderboard.
 
 ### Main Character
 
-The main character is a soldier wearing a uniform and carrying a gun. As the character progresses, it evolves, gaining access to a super weapon that changes the dynamics of battles. Players experience the soldier's journey in a third-person perspective.
+The main character is a soldier wearing a uniform and carrying a dragon spear. This spear is your primary weapon to combat the monsters, each wielding their own spears, who will chase you when you get close. As you advance through the game, you can also collect speed-boosting items to help navigate the mazes more swiftly. The soldier's perspective is seen from the third person, placing you right in the middle of the action as you take on challenging foes and intricate mazes.
 
 ### Sketch of Main Character
 
 ![Sketch of Main Character](https://github.com/Aurelio088/Berzerk/blob/main/img/sketch_Soldier.png)
 
+![Sketch of Main Character](https://github.com/Aurelio088/Berzerk/blob/main/img/sketch_Soldier2.png)
 
 ### Opponents
 
-Robots of various shapes and sizes are the main opponents. They shoot bullets in the player's direction, becoming faster and deadlier as the game progresses.
+The opponents are monstrous creatures, each armed with their own dragon spears. These foes become increasingly aggressive as you progress, pursuing you as soon as you draw near. As the game advances, these monsters become faster and their tactics more lethal, challenging you to constantly improve your strategy and reflexes. Each encounter is a test of your ability to wield your spear and navigate the mazes swiftly.
 
 ### Sketch of Opponents
 
 ![Sketch of Opponents](https://github.com/Aurelio088/Berzerk/blob/main/img/Sketchs.png)
 
+![Sketch of Opponents](https://github.com/Aurelio088/Berzerk/blob/main/img/Sketchs2.png)
+
 ### Environment
 
-Berzerk's environment features scenes with different mazes. The maze starts on the left and goes to the right, composed of walls that players navigate. The visuals are simple, respecting a classic arcade vibe, with the maze changing patterns according to the scenes.
+In this revamped Berzerk, the environment consists of various mazes, each with a unique layout that challenges your navigation skills. The mazes extend from left to right, filled with walls and pathways that you must skillfully maneuver through. The design keeps to a minimalistic style, nodding to the classic arcade aesthetic, but with each new scene, the maze patterns shift, offering fresh challenges and keeping the gameplay dynamic and engaging.
 
 ### Sketch of World
 
@@ -45,17 +50,20 @@ Berzerk's environment features scenes with different mazes. The maze starts on t
 
 The game menu includes a bold title "Berzerk" and buttons for "Start Game," "Credits," and "Exit Game."
 
-![Sketch of Menu](https://github.com/Aurelio088/Berzerk/blob/main/img/Berzerk%20Sketch%20Menu.png)
+![Sketch of Menu](https://github.com/Aurelio088/Berzerk/blob/main/img/BerzerkSketchMenu.png)
+
+### Credits
+
+![Sketch of Menu](https://github.com/Aurelio088/Berzerk/blob/main/img/BerzerkSketchCredits.png)
 
 ### Controls
 
-Controls are simple, requiring only a keyboard and mouse. Players can move the character with arrow keys, fire bullets with the spacebar, and use the super weapon with the enter key. The escape key pauses the game.
+Movement is controlled with the arrow keys (left, right, up, and down) or the traditional 'WASD' keys. Pressing the spacebar allows the player to attack with the spear. Additional functionality includes pausing the game with the 'P' key, returning to the previous menu or screen with the 'Escape' key, and quitting the game with the 'Q' key. For debugging purposes or enhanced player experience, toggling collision visibility and the grid display can be done using the 'C' and 'G' keys respectively.
 
 ### Sounds
 
-Background music sets the tone, and specific sounds accompany movements, bullet firing, and special weapon use.
+Background music sets the tone, and specific sounds accompany movements, attacks, power ups and deaths.
 
 ## Summary
 
-Embark on an electrifying journey with Berzerk, the ultimate retro arcade game. Engage in intense run-and-gun gameplay, challenging your skills as you progress through levels. Every move counts, every shot matters, and every level brings you closer to arcade victory! Don't miss your chance to own this classic-inspired game that captures the essence of gaming's golden era.
-
+Try out the world of Berzerk, where classic arcade thrills meet modern challenges. Arm yourself with a dragon spear and face off against spear-wielding monsters in shifting mazes. Each step you take and every enemy you defeat tests your reflexes and strategic thinking. Collect items to boost your speed and navigate through the levels, each designed to push you to your limits. Experience the blend of nostalgia and new twists in a game that pays homage to the golden era of arcade gaming while introducing fresh, exciting challenges.

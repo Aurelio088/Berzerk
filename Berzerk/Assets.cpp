@@ -18,21 +18,7 @@ Assets& Assets::getInstance() {
 }
 
 // SCORE - By Aurelio Rodrigues
-// Adding score and life variables
-int m_score = 0;
 int m_life = 3;
-
-void Assets::incrementScore(int points) {
-	m_score += points;
-}
-
-void Assets::decrementScore(int points) {
-	m_score -= points;
-}
-
-int Assets::getScore() {
-	return m_score;
-}
 
 void Assets::decrementLife(int life) {
 	m_life -= life;
@@ -43,7 +29,6 @@ int Assets::getLife() {
 }
 
 void Assets::reset() {
-	m_score = 0;
 	m_life = 3;
 }
 // SCORE - By Aurelio Rodrigues
@@ -94,23 +79,19 @@ const sf::Font& Assets::getFont(const std::string& fontName) const {
 	return *found->second;
 }
 
-
 const sf::SoundBuffer& Assets::getSound(const std::string& soundName) const {
 	auto found = m_soundEffects.find(soundName);
 	assert(found != m_soundEffects.end());
 	return *found->second;
 }
 
-
 const sf::Texture& Assets::getTexture(const std::string& textureName) const {
 	return m_textures.at(textureName);
 }
 
-
 const Assets::Sprite& Assets::getSprt(const std::string& spriteName) const {
 	return m_spriteMap.at(spriteName);
 }
-
 
 const Animation& Assets::getAnimation(const std::string& name) const {
 	return m_animationMap.at(name);
@@ -140,7 +121,6 @@ void Assets::loadSounds(const std::string& path) {
 		confFile >> token;
 	}
 	confFile.close();
-
 }
 
 void Assets::loadJson(const std::string& path) {
@@ -186,35 +166,6 @@ void Assets::loadJson(const std::string& path) {
 			}
 			f.close();
 		}
-		//if (token == "JSON2")
-		//{
-		//	using json = nlohmann::json;
-
-		//	std::string  path;
-		//	confFile >> path;
-
-		//	// read the FrameSets from the json file
-		//	std::ifstream f(path);
-		//	json data = json::parse(f)["frames"];
-
-		//	std::cout << std::setw(4) << data << "\n\n";
-
-		//	for (auto i : data) {
-
-		//		// clean up animation name
-		//		std::string tmp = i["filename"];
-		//		std::string::size_type n = tmp.find(" (");
-		//		if (n == std::string::npos)
-		//			n = tmp.find(".png");
-
-		//		// create IntRect for each frame in animation
-		//		auto ir = sf::IntRect(i["frame"]["x"], i["frame"]["y"],
-		//			i["frame"]["w"], i["frame"]["h"]);
-
-		//		m_frameSets[tmp.substr(0, n)].push_back(ir);
-		//	}
-		//	f.close();
-		//}
 		else
 		{
 			// ignore rest of line and continue
@@ -224,7 +175,6 @@ void Assets::loadJson(const std::string& path) {
 		confFile >> token;
 	}
 	confFile.close();
-
 }
 
 void Assets::loadAnimations(const std::string& path) {
@@ -266,7 +216,6 @@ void Assets::loadAnimations(const std::string& path) {
 	confFile.close();
 }
 
-
 void Assets::loadFonts(const std::string& path) {
 	std::ifstream confFile(path);
 	if (confFile.fail()) {
@@ -292,7 +241,6 @@ void Assets::loadFonts(const std::string& path) {
 	}
 	confFile.close();
 }
-
 
 void Assets::loadTextures(const std::string& path) {
 	// Read Config file
@@ -348,7 +296,6 @@ void Assets::loadSprts(const std::string& path) {
 	}
 	confFile.close();
 }
-
 
 void Assets::loadFromFile(const std::string path) {
 	loadFonts(path);

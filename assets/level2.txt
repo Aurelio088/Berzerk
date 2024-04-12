@@ -75,19 +75,40 @@ Tile Background	760  440 40 0	40  40  yes
 Tile Background	760  480 40 0	40  40  yes
 Tile Background	760  520 40 0	40  40  yes
 
-# First wall 
-Tile Background	200  40  40 0	40  40  yes
-Tile Background	200  80  40 0	40  40  yes
-Tile Background	200  120 40 0	40  40  yes
-Tile Background	200  160 40 0	40  40  yes
-Tile Background	200  200 40 0	40  40  yes
-Tile Background	200  240 40 0	40  40  yes
-Tile Background	200  280 40 0	40  40  yes
-Tile Background	200  320 40 0	40  40  yes
-Tile Background	200  360 40 0	40  40  yes
-Tile Background	200  400 40 0	40  40  yes
+# Maze walls
+Tile Background	40  160  80 0	40  40  yes
+Tile Background	80  160  80 0	40  40  yes
+Tile Background	120 160  80 0	40  40  yes
+Tile Background	160 160  80 0	40  40  yes
+Tile Background	180 160  80 0	40  40  yes
 
-# Second wall
+Tile Background	180 200  80 0	40  40  yes
+Tile Background	180 240  80 0	40  40  yes
+Tile Background	180 280  80 0	40  40  yes
+Tile Background	180 320  80 0	40  40  yes
+Tile Background	180 360  80 0	40  40  yes
+Tile Background	180 400  80 0	40  40  yes
+
+Tile Background	360 160  80 0	40  40  yes
+Tile Background	360 200  80 0	40  40  yes
+Tile Background	360 240  80 0	40  40  yes
+Tile Background	360 280  80 0	40  40  yes
+Tile Background	360 320  80 0	40  40  yes
+Tile Background	360 360  80 0	40  40  yes
+Tile Background	360 400  80 0	40  40  yes
+Tile Background	360 440  80 0	40  40  yes
+
+Tile Background	400 440  80 0	40  40  yes
+Tile Background	440 440  80 0	40  40  yes
+Tile Background	480 440  80 0	40  40  yes
+Tile Background	360 530  80 0	40  40  yes
+Tile Background	400 530  80 0	40  40  yes
+Tile Background	440 530  80 0	40  40  yes
+Tile Background	480 530  80 0	40  40  yes
+
+Tile Background	640 440  80 0	40  40  yes
+Tile Background	640 480  80 0	40  40  yes
+
 Tile Background	400 400  80 0	40  40  yes
 Tile Background	440 400  80 0	40  40  yes
 Tile Background	480 400  80 0	40  40  yes
@@ -98,30 +119,40 @@ Tile Background	640 400  80 0	40  40  yes
 Tile Background	680 400  80 0	40  40  yes
 Tile Background	720 400  80 0	40  40  yes
 
-# Third wall 
-Tile Background	560  160 40 0	40  40  yes
-Tile Background	560  200 40 0	40  40  yes
-Tile Background	560  240 40 0	40  40  yes
-Tile Background	560  280 40 0	40  40  yes
-Tile Background	560  320 40 0	40  40  yes
-Tile Background	560  360 40 0	40  40  yes
-
-# Forth wall
-Tile Background	240 160  80 0	40  40  yes
-Tile Background	280 160  80 0	40  40  yes
 Tile Background	320 160  80 0	40  40  yes
-Tile Background	360 160  80 0	40  40  yes
+Tile Background	280 160  80 0	40  40  yes
+
+Tile Background	280 120  80 0	40  40  yes
+
 Tile Background	400 160  80 0	40  40  yes
+Tile Background	480 160  80 0	40  40  yes
+Tile Background	520 160  80 0	40  40  yes
+Tile Background	560 160  80 0	40  40  yes
+Tile Background	600 160  80 0	40  40  yes
+Tile Background	640 160  80 0	40  40  yes
+Tile Background	680 160  80 0	40  40  yes
+Tile Background	700 160  80 0	40  40  yes
+
+Tile Background	520 200  80 0	40  40  yes
+Tile Background	520 240  80 0	40  40  yes
+Tile Background	520 280  80 0	40  40  yes
+
+Tile Background	720 240  80 0	40  40  yes
+Tile Background	720 280  80 0	40  40  yes
+
+Tile Background	540 300  80 0	40  20  yes
+Tile Background	580 300  80 0	40  20  yes
+Tile Background	640 300  80 0	40  20  yes
 
 #Level exit
-Exit 790 200 10 120 ../assets/level2.txt
+Exit 790 200 10 120 quit
 
 #Enemies
-Enemy 17 2  -50 0 2 17 enemy
-Enemy 7  12  50 0 7 17 enemy
+Enemy 7  2  -80 0 2  7  enemy2
+Enemy 9  12  80 0 9  17 enemy2
 
 #Spear
-Spear 12 7
+Spear 2 12
 
 #PowerUp
-PowerUp 18 2
+PowerUp 18 3

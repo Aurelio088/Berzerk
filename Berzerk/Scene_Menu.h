@@ -17,8 +17,6 @@ private:
 	sf::Clock                   m_backgroundClock;
 	sf::Time                    m_backgroundChangeInterval;
 
-
-
 	void init();
 	void onEnd() override;
 public:
@@ -29,7 +27,5 @@ public:
 
 	void sRender() override;
 	void sDoAction(const Command& action) override;
-
-
 };
 

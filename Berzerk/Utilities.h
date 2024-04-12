@@ -68,6 +68,4 @@ struct Vector2f
 };
 
 
-
-
 #endif //BREAKOUT_UTILITIES_H

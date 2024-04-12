@@ -6,10 +6,8 @@
 #include <map>
 #include <string>
 
-
 using CommandMap = std::map<int, std::string>;
-
-class Scene_Berzerk;
+using GamepadMap = std::map<std::string, std::string>;
 
 class Scene
 {
@@ -19,6 +17,7 @@ protected:
 	GameEngine* m_game;
 	EntityManager	m_entityManager;
 	CommandMap		m_commands;
+	GamepadMap		m_gamepadMap;
 	bool			m_isPaused{ false };
 	bool			m_hasEnded{ false };
 	size_t			m_currentFrame{ 0 };
@@ -37,6 +36,8 @@ public:
 	void				simulate(int);
 	void				doAction(Command);
 	void				registerAction(int, std::string);
+	void				registerGamepadAction(std::string, std::string);
 	const CommandMap	getActionMap() const;
+	const GamepadMap	getGamepadMap() const;
 };
 

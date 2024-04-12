@@ -5,7 +5,6 @@
 #ifndef BREAKOUT_ENTITYMANAGER_H
 #define BREAKOUT_ENTITYMANAGER_H
 
-
 #include <map>
 #include <vector>
 #include <string>
@@ -38,6 +37,5 @@ public:
 
 	void                            update();
 };
-
 
 #endif //BREAKOUT_ENTITYMANAGER_H

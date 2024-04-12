@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include "Assets.h"
-
 #include <memory>
 #include <map>
 
@@ -48,6 +46,5 @@ public:
 
 	sf::Vector2f		windowSize() const;
 	bool				isRunning();
-
 };
 

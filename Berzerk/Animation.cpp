@@ -5,7 +5,6 @@
 #include "Animation.h"
 #include "Utilities.h"
 
-
 Animation::Animation(const std::string& name,
 	const sf::Texture& t,
 	std::vector<sf::IntRect> frames,
@@ -23,7 +22,6 @@ Animation::Animation(const std::string& name,
 	std::cout << name << " tpf: " << m_timePerFrame.asMilliseconds() << "ms\n";
 }
 
-
 void Animation::update(sf::Time dt) {
 
 	if (!m_playing)
@@ -33,26 +31,6 @@ void Animation::update(sf::Time dt) {
 	if (m_countDown < sf::Time::Zero) {
 		m_countDown = m_timePerFrame;
 		m_currentFrame += 1;
-
-		//if (m_currentFrame >= m_frames.size()) {
-		//	if (!m_isRepeating) {
-		//		m_currentFrame = 0;  // Reset to the first frame
-		//		m_playing = false;   // Stop the animation
-		//	}
-		//	else {
-		//		m_currentFrame = m_frames.size() - 1;
-		//	}
-		//}
-
-		//if (m_currentFrame >= m_frames.size()) {
-		//	if (!m_isRepeating) {
-		//		m_currentFrame = 0;  // Reset to the first frame
-		//		m_playing = false;   // Stop the animation
-		//	}
-		//	else {
-		//		m_currentFrame = 0;  // Reset to the first frame for repetition
-		//	}
-		//}
 
 		if (m_currentFrame == m_frames.size() && !m_isRepeating)
 			return;  // on the last frame of non-repeating animaton, leave it
@@ -64,16 +42,13 @@ void Animation::update(sf::Time dt) {
 	}
 }
 
-
 bool Animation::hasEnded() const {
 	return (m_currentFrame >= m_frames.size());
 }
 
-
 const std::string& Animation::getName() const {
 	return m_name;
 }
-
 
 sf::Sprite& Animation::getSprite() {
 	return m_sprite;

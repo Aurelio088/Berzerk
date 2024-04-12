@@ -8,9 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <map>
-
 #include "Animation.h"
-
 
 class Assets {
 public:
@@ -41,7 +39,6 @@ private:
 	std::map<std::string, Animation>                            m_animationMap;
 	std::map<std::string, std::vector<sf::IntRect>>             m_frameSets;
 
-
 	void loadFonts(const std::string& path);
 	void loadTextures(const std::string& path);
 	void loadSprts(const std::string& path);
@@ -62,18 +59,11 @@ public:
 	const Sprite& getSprt(const std::string& sprtName) const;
 	const Animation& getAnimation(const std::string& name) const;
 
-	// Score
-	void decrementScore(int points); // Add by Aurelio
-	void incrementScore(int points); // Add by Aurelio 
-	int getScore(); // Add by Aurelio
-
 	// Lives
-	void decrementLife(int life); // Add by Aurelio
-	int getLife(); // Add by Aurelio
+	void decrementLife(int life);		// Add by Aurelio
+	int getLife();						// Add by Aurelio
 
-	void reset(); // Add by Aurelio
-
+	void reset();						// Add by Aurelio
 };
-
 
 #endif //BREAKOUT_ASSETS_H

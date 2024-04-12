@@ -5,15 +5,14 @@
 #ifndef BREAKOUT_ENTITY_H
 #define BREAKOUT_ENTITY_H
 
-
 #include <tuple>
 #include <string>
-
 #include "Components.h"
+
 // forward declarations
 class EntityManager;
 
-using ComponentTuple = std::tuple<CSprite, CAnimation, CState, CTransform, CBoundingBox, CInput, CPowerUps, CScript>;
+using ComponentTuple = std::tuple<CSprite, CAnimation, CState, CTransform, CBoundingBox, CInput, CPowerUps, CScript, CString>;
 
 class Entity {
 private:
@@ -25,7 +24,7 @@ private:
 	bool                    m_active{ true };
 	ComponentTuple          m_components;
 
-	sf::Vector2f m_boundingBoxOffset{ 0.f, 0.f };	// Add by Aurelio
+	sf::Vector2f m_boundingBoxOffset{ 0.f, 0.f };	// Add by Aurelio Rodrigues
 
 public:
 
@@ -34,14 +33,11 @@ public:
 	const std::string& getTag() const;
 	bool                    isActive() const;
 
-
-
 	// Component API
 	template<typename T>
 	inline bool hasComponent() const {
 		return getComponent<T>().has;
 	}
-
 
 	template<typename T, typename... TArgs>
 	inline T& addComponent(TArgs &&... mArgs) {
@@ -73,19 +69,15 @@ public:
 	// However, I just noticed that going to finish the assignment
 	// That's why I have not implemented removeComponent in other entities
 
-
 	template<typename T>
 	inline T& getComponent() {
 		return std::get<T>(m_components);
 	}
-
 
 	template<typename T>
 	inline const T& getComponent() const {
 		return std::get<T>(m_components);
 	}
 };
-
-
 
 #endif //BREAKOUT_ENTITY_H

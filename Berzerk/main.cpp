@@ -2,7 +2,7 @@
 //
 //  Assignment:		Project Berzerk
 //  Instructor:     David Burchill
-//  Year / Term:    Fall 2023
+//  Year / Term:    Winter 2024
 //  File name:      main.cpp
 //
 //  Student name:   Aurelio Rodrigues
@@ -18,12 +18,8 @@
 //  1. I didnt get abc to work because of xyz, I tried ijk...
 //
 
-
-
 #include <iostream>
 #include "GameEngine.h"
-
-
 
 int main()
 {

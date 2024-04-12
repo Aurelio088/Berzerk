@@ -15,23 +15,20 @@ GameEngine::GameEngine(const std::string& path)
 	init(path);
 }
 
-
 void GameEngine::init(const std::string& path)
 {
 	unsigned int width;
 	unsigned int height;
 	loadConfigFromFile(path, width, height);
 
-
 	m_window.create(sf::VideoMode(width, height), "Berzerk");
+	//m_window.create(sf::VideoMode(width, height), "Berzerk", sf::Style::Fullscreen);
 
 	m_statisticsText.setFont(Assets::getInstance().getFont("main"));
 	m_statisticsText.setPosition(15.0f, 5.0f);
 	m_statisticsText.setCharacterSize(15);
 
 	changeScene("MENU", std::make_shared<Scene_Menu>(this));
-	
-
 }
 
 void GameEngine::loadConfigFromFile(const std::string& path, unsigned int& width, unsigned int& height) const {
@@ -62,7 +59,6 @@ void GameEngine::loadConfigFromFile(const std::string& path, unsigned int& width
 	config.close();
 }
 
-
 void GameEngine::sUserInput()
 {
 	sf::Event event;
@@ -90,7 +86,6 @@ std::shared_ptr<Scene> GameEngine::currentScene()
 void GameEngine::changeScene(const std::string& sceneName, std::shared_ptr<Scene> scene, bool endCurrentScene)
 {
 
-
 	if (endCurrentScene) {
 		// remove scene from map
 		m_sceneMap.erase(m_currentScene);
@@ -105,12 +100,10 @@ void GameEngine::changeScene(const std::string& sceneName, std::shared_ptr<Scene
 	m_currentScene = sceneName;
 }
 
-
 void GameEngine::quit()
 {
 	m_window.close();
 }
-
 
 void GameEngine::run()
 {
@@ -132,8 +125,6 @@ void GameEngine::run()
 
 		currentScene()->sRender();					// render world
 
-		// draw stats
-
 		// display
 		window().display();
 	}
@@ -148,7 +139,6 @@ void GameEngine::backLevel() {
 
 }
 
-
 sf::RenderWindow& GameEngine::window()
 {
 	return m_window;
@@ -157,7 +147,6 @@ sf::RenderWindow& GameEngine::window()
 sf::Vector2f GameEngine::windowSize() const {
 	return sf::Vector2f{ m_window.getSize() };
 }
-
 
 bool GameEngine::isRunning()
 {

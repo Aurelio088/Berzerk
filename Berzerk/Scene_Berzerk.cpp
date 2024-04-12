@@ -12,6 +12,7 @@
 #include "MusicPlayer.h"
 #include "Assets.h"
 #include "SoundPlayer.h"
+#include "Scene_Credits.h"
 #include <random>
 
 namespace {
@@ -26,36 +27,12 @@ Scene_Berzerk::Scene_Berzerk(GameEngine* gameEngine, const std::string& levelPat
 	registerActions();
 
 	// spawn player 
+	// I could make it in level.txt, but I have simplified for this project.
 	auto pos = m_worldView.getSize();
 	pos.x = 0.f - 20.f;
 	pos.y -= 600.f - 260.f;
 
 	spawnPlayer(pos);
-
-	// spawn enemy 1 (Grid position 17, 2)
-	sf::Vector2f enemy1Position(17, 2);
-
-	// Set the center of the grid cell
-	float xCenter = enemy1Position.x * m_gridSize.x + m_gridSize.x / 2.0f;
-	float yCenter = m_game->window().getSize().y - (enemy1Position.y * m_gridSize.y + m_gridSize.y / 2.0f);
-
-	// Spawn the enemy
-	spawnEnemy(sf::Vector2f(xCenter, yCenter), sf::Vector2f(-50.0f, 0.0f), 2.0f, 17.0f);
-
-	// spawn enemy 2 (Grid position 7, 12)
-	sf::Vector2f enemy2Position(7, 12);
-
-	// Calculate the center of the grid cell
-	float newXCenter = enemy2Position.x * m_gridSize.x + m_gridSize.x / 2.0f;
-	float newYCenter = m_game->window().getSize().y - (enemy2Position.y * m_gridSize.y + m_gridSize.y / 2.0f);
-
-	spawnEnemy(sf::Vector2f(newXCenter, newYCenter), sf::Vector2f(50.0f, 0.0f), 7.0f, 17.0f);
-
-	// spawn dragonSpare
-	spawnDragonSpear(sf::Vector2f(12 * m_gridSize.x, (600 - 7 * m_gridSize.y) - m_gridSize.y / 2));
-
-	// spawn power up (position 18, 2)
-	spawnPowerUp(sf::Vector2f(18 * m_gridSize.x, (600 - 2 * m_gridSize.y) - m_gridSize.y / 2));
 
 	MusicPlayer::getInstance().play("gameTheme");
 	MusicPlayer::getInstance().setVolume(30);
@@ -95,6 +72,7 @@ void Scene_Berzerk::registerActions() {
 	registerAction(sf::Keyboard::Up, "UP");
 	registerAction(sf::Keyboard::S, "DOWN");
 	registerAction(sf::Keyboard::Down, "DOWN");
+
 	// space to attack
 	registerAction(sf::Keyboard::Space, "ATTACK");
 }
@@ -245,6 +223,15 @@ void Scene_Berzerk::playerMovement() {
 			animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
 		animation.play();
 	}
+	else if (pPowerUps.dragonSpearCarried && !pInput.attack)
+	{
+		m_player->getComponent<CBoundingBox>().size = sf::Vector2f(25.0f, 25.0f);
+		m_player->getComponent<CAnimation>().animation.stop();
+	}
+	else
+	{
+		m_player->getComponent<CAnimation>().animation.stop();
+	}
 
 	pv = normalize(pv);
 	m_player->getComponent<CTransform>().vel = m_config.playerSpeed * pv * m_player->getComponent<CPowerUps>().velocity;
@@ -252,13 +239,10 @@ void Scene_Berzerk::playerMovement() {
 
 std::string Scene_Berzerk::playAttackAnimation()
 {
-	//std::string oldAnimation = m_player->getComponent<CAnimation>().animation.getName();
-	auto& animation = m_player->getComponent<CAnimation>().animation;
+ 	auto& animation = m_player->getComponent<CAnimation>().animation;
 	std::string oldAnimation = animation.getName();
 	if (!oldAnimation.contains("attack"))
 	{
-		/*oldAnimation.erase(0, 5);
-		return "attack" + oldAnimation;*/
 		oldAnimation.erase(0, 5);
 		std::string newAnimation = "attack" + oldAnimation;
 
@@ -268,9 +252,6 @@ std::string Scene_Berzerk::playAttackAnimation()
 		}
 		else if (oldAnimation == "Left" || oldAnimation == "Right") {
 			newSize = sf::Vector2f(80.f, 25.f);
-		}
-		else {
-			newSize = sf::Vector2f(25.f, 25.f);
 		}
 
 		// Update the size of the player bounding box
@@ -302,6 +283,7 @@ std::string Scene_Berzerk::playAttackAnimation()
 void Scene_Berzerk::enemyMovement() {
 
 	auto& enemies = m_entityManager.getEntities("enemy");
+	auto& playerPos = m_player->getComponent<CTransform>().pos;
 
 	for (auto& enemy : enemies)
 	{
@@ -309,20 +291,85 @@ void Scene_Berzerk::enemyMovement() {
 		auto& enemyScript = enemy->getComponent<CScript>();
 		sf::Vector2f currentPos = enemyTransform.pos;
 
-		if (currentPos.x >= enemyScript.gridMax * m_gridSize.x) {
-			enemyTransform.vel = sf::Vector2f(-50, 0);
+		if (enemy->getComponent<CState>().state == "patrol")
+		{
+			if (enemyTransform.pos.y > enemyScript.patrolY)
+			{
+				if (enemyTransform.prevPos.y < enemyScript.patrolY)
+				{
+					enemyTransform.pos.y = enemyScript.patrolY;
 
-			auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
-			enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation;
-			enemyAnimation.play();
-		}
-		else if (currentPos.x <= enemyScript.gridMin * m_gridSize.x) {
-			enemyTransform.vel = sf::Vector2f(50, 0);
+					if (enemyScript.oldVelX > 0) enemyScript.oldVelX = 50.0;
+					else if (enemyScript.oldVelX < 0) enemyScript.oldVelX = -50.0;
 
-			auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
-			enemyAnimation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation;
-			enemyAnimation.play();
+					enemyTransform.vel = sf::Vector2f(enemyScript.oldVelX, 0);
+				}
+				else
+				{
+					if (enemyTransform.vel.x != 0) enemyScript.oldVelX = enemyTransform.vel.x;
+					enemyTransform.vel = sf::Vector2f(0, -20);
+				}
+			}
+			else if (enemyTransform.pos.y < enemyScript.patrolY)
+			{
+				if (enemyTransform.prevPos.y > enemyScript.patrolY)
+				{
+					enemyTransform.pos.y = enemyScript.patrolY;
+
+					if (enemyScript.oldVelX > 0) enemyScript.oldVelX = 50.0;
+					else if (enemyScript.oldVelX < 0) enemyScript.oldVelX = -50.0;
+
+					enemyTransform.vel = sf::Vector2f(enemyScript.oldVelX, 0);
+				}
+				else
+				{
+					if (enemyTransform.vel.x != 0) enemyScript.oldVelX = enemyTransform.vel.x;
+					enemyTransform.vel = sf::Vector2f(0, 20);
+				}
+			}
+
+			if (enemyTransform.pos.x >= enemyScript.gridMax * m_gridSize.x)
+			{
+				enemyTransform.vel = sf::Vector2f(-50, 0);
+			}
+			else if (enemyTransform.pos.x <= enemyScript.gridMin * m_gridSize.x)
+			{
+				enemyTransform.vel = sf::Vector2f(50, 0);
+			}
 		}
+		else if (enemy->getComponent<CState>().state == "chase")
+		{
+			auto& playerPos = m_player->getComponent<CTransform>().pos;
+			sf::Vector2f currentVelocity = enemyTransform.vel;
+
+			float chaseSpeed = 110.0f;
+
+			sf::Vector2f direction = playerPos - enemyTransform.pos;
+			direction = normalize(direction);
+
+			enemyTransform.vel = direction * chaseSpeed;
+		}
+
+		auto& animation = enemy->getComponent<CAnimation>().animation;
+		std::string str = enemy->getComponent<CString>().str;
+		std::string animationName;
+
+		if (enemyTransform.vel.x > 0) {
+			animationName = str + "Right";
+		}
+		else if (enemyTransform.vel.x < 0){
+			animationName = str + "Left";
+		}
+		else if (enemyTransform.vel.y > 0) {
+			animationName = str + "Down";
+		}
+		else if (enemyTransform.vel.y < 0) {
+			animationName = str + "Up";
+		}
+
+		if (animation.getName() != animationName)
+			animation = enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
+		animation.play();
 	}
 }
 
@@ -352,7 +399,6 @@ void Scene_Berzerk::sRender() {
 			if (e->hasComponent<CTransform>()) {
 				auto& tfm = e->getComponent<CTransform>();
 				sprite.setPosition(tfm.pos);
-
 			}
 			m_game->window().draw(sprite);
 		}
@@ -429,18 +475,7 @@ void Scene_Berzerk::sRender() {
 
 		m_game->window().draw(lines);
 	}
-
-	// draw score
-	//m_game->window().draw(m_scoreText);
-
-	// draw lives
-	//m_game->window().draw(m_livesText);
-
-	// draw win text
-	//m_game->window().draw(m_endText);
-
 }
-
 
 void Scene_Berzerk::update(sf::Time dt) {
 	sUpdate(dt);
@@ -470,51 +505,20 @@ void Scene_Berzerk::sDoAction(const Command& action) {
 	// Key release
 	else if (action.type() == "END") {
 		// Player control
-		if (action.name() == "LEFT") {
-			m_player->getComponent<CInput>().left = false;
-			if (m_player->hasComponent<CAnimation>()) {
-				auto& animation = m_player->getComponent<CAnimation>().animation;
-				animation.stop();
-			}
-		}
-		else if (action.name() == "RIGHT") {
-			m_player->getComponent<CInput>().right = false;
-			if (m_player->hasComponent<CAnimation>()) {
-				auto& animation = m_player->getComponent<CAnimation>().animation;
-				animation.stop();
-			}
-		}
-		else if (action.name() == "UP") {
-			m_player->getComponent<CInput>().up = false;
-			if (m_player->hasComponent<CAnimation>()) {
-				auto& animation = m_player->getComponent<CAnimation>().animation;
-				animation.stop();
-			}
-		}
-		else if (action.name() == "DOWN") {
-			m_player->getComponent<CInput>().down = false;
-			if (m_player->hasComponent<CAnimation>()) {
-				auto& animation = m_player->getComponent<CAnimation>().animation;
-				animation.stop();
-			}
-		}
-		else if (action.name() == "ATTACK") { 
-			m_player->getComponent<CInput>().attack = false; 
-			if (m_player->hasComponent<CAnimation>()) {
-				auto& animation = m_player->getComponent<CAnimation>().animation;
-				animation.stop();
-			}
-		}
+		if (action.name() == "LEFT") { m_player->getComponent<CInput>().left = false; }
+		else if (action.name() == "RIGHT") { m_player->getComponent<CInput>().right = false; }
+		else if (action.name() == "UP") { m_player->getComponent<CInput>().up = false; }
+		else if (action.name() == "DOWN") {	m_player->getComponent<CInput>().down = false; }
+		else if (action.name() == "ATTACK") { m_player->getComponent<CInput>().attack = false; }
 		else if (action.name() == "RELEASE_SPEAR") { m_player->getComponent<CPowerUps>().dragonSpearCarried = false; }
 	}
 }
-
 
 void Scene_Berzerk::spawnPlayer(sf::Vector2f pos) {
 
 	m_player = m_entityManager.addEntity("player");
 
-	sf::Vector2f boundingBoxOffset{ 0.f, 10.f }; // Moving the bounding box down a bit
+	sf::Vector2f boundingBoxOffset{ 0.f, 10.f }; // Moving down the bounding box a bit
 	m_player->setBoundingBoxOffset(boundingBoxOffset);
 
 	m_player->addComponent<CTransform>(pos);
@@ -531,24 +535,30 @@ void Scene_Berzerk::spawnPlayer(sf::Vector2f pos) {
 	}
 }
 
-// spawn Enemies
-void Scene_Berzerk::spawnEnemy(const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity, float gridMin, float gridMax) {
-	auto enemy2 = m_entityManager.addEntity("enemy");
+void Scene_Berzerk::spawnEnemy(
+	const sf::Vector2f& initialPosition,
+	const sf::Vector2f& initialVelocity,
+	float gridMin,
+	float gridMax,
+	const std::string& name)
+{
+	auto enemy = m_entityManager.addEntity("enemy");
 
-	enemy2->addComponent<CTransform>(initialPosition, initialVelocity);
-	enemy2->addComponent<CBoundingBox>(sf::Vector2f(80.f, 40.f));
+	enemy->addComponent<CTransform>(initialPosition, initialVelocity);
+	enemy->addComponent<CBoundingBox>(sf::Vector2f(80.f, 40.f));
 
 	if (initialVelocity.x < 0) {
-		enemy2->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyLeft")).animation.play();
+		enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation(name + "Left")).animation.play();
 	}
 	else {
-		enemy2->addComponent<CAnimation>(Assets::getInstance().getAnimation("enemyRight")).animation.play();
+		enemy->addComponent<CAnimation>(Assets::getInstance().getAnimation(name + "Right")).animation.play();
 	}
 
-	enemy2->addComponent<CScript>(gridMin, gridMax);
+	enemy->addComponent<CState>("patrol");
+	enemy->addComponent<CScript>(gridMin, gridMax, initialPosition.y);
+	enemy->addComponent<CString>(name);
 }
 
-// spawn Dragon Spear
 void Scene_Berzerk::spawnDragonSpear(const sf::Vector2f& initialPosition) {
 	auto dragonSpear = m_entityManager.addEntity("dragonSpear");
 
@@ -598,8 +608,8 @@ void Scene_Berzerk::sCollisions() {
 					else if (ptx.prevPos.y > ttx.prevPos.y) {
 						p->getComponent<CTransform>().pos.y += overlap.y;
 					}
-
 				}
+
 				// Collision with the x axis
 				else {
 					if (ptx.prevPos.x < ttx.prevPos.x) {
@@ -613,18 +623,25 @@ void Scene_Berzerk::sCollisions() {
 		}
 
 		// Player vs Enemies
-
 		auto& enemies = m_entityManager.getEntities("enemy");
 
 		for (auto& enemy : enemies) {
-			/*if (checkCollision(*m_player, *enemy)) {
-				onPlayerCollision();
-			}*/
+
+			auto& playerPos = p->getComponent<CTransform>().pos;
+			auto& enemyTransform = enemy->getComponent<CTransform>().pos;
+
+			if ((playerPos.y >= enemyTransform.y - m_gridSize.y && playerPos.y <= enemyTransform.y + m_gridSize.y) ||
+				(playerPos.x <= enemyTransform.x - m_gridSize.x * 2 && playerPos.x >= enemyTransform.x + m_gridSize.x * 2))
+			{
+				enemy->getComponent<CState>().state = "chase";
+			}
+			else
+			{
+				enemy->getComponent<CState>().state = "patrol";
+			}
+
 			if (checkCollision(*m_player, *enemy)) {
-				if (m_player->getComponent<CState>().state == "attackUp" ||
-					m_player->getComponent<CState>().state == "attackDown" ||
-					m_player->getComponent<CState>().state == "attackLeft" ||
-					m_player->getComponent<CState>().state == "attackRight") {
+				if (m_player->getComponent<CInput>().attack) {
 
 					SoundPlayer::getInstance().play("deathEnemy", m_player->getComponent<CTransform>().pos);
 					enemy->destroy();
@@ -670,6 +687,31 @@ void Scene_Berzerk::sCollisions() {
 
 				auto& playerPowerUps = m_player->getComponent<CPowerUps>();
 				playerPowerUps.velocity++;
+				playerPowerUps.powerUpCollected = true;
+			}
+		}
+
+		// Player vs Exit
+		for (auto& exit : m_entityManager.getEntities("Exit"))
+		{
+			auto overlap = Physics::getOverlap(p, exit);
+			if (overlap.x > 0 && overlap.y > 0)
+			{
+				auto& str = exit->getComponent<CString>().str;
+
+				auto& playerPowerUps = p->getComponent<CPowerUps>();
+				// Condition to allow changing scene if the player carries power ups
+				if (playerPowerUps.dragonSpearCarried && playerPowerUps.powerUpCollected) 
+				{
+					if (str == "quit")
+					{
+						m_game->changeScene("CREDITS", std::make_shared<Scene_Credits>(m_game));
+					}
+					else
+					{
+						m_game->changeScene("PLAY", std::make_shared<Scene_Berzerk>(m_game, str), true);
+					}
+				}
 			}
 		}
 	}
@@ -697,7 +739,6 @@ void Scene_Berzerk::sCollisions() {
 					else if (ptx.prevPos.y > ttx.prevPos.y) {
 						enemy->getComponent<CTransform>().pos.y += overlap.y;
 					}
-
 				}
 				// Collision with the x axis
 				else {
@@ -712,7 +753,6 @@ void Scene_Berzerk::sCollisions() {
 		}
 	}
 }
-
 
 bool Scene_Berzerk::checkCollision(Entity& entity1, Entity& entity2) {
 	if (entity1.hasComponent<CBoundingBox>() && entity2.hasComponent<CBoundingBox>()) {
@@ -736,15 +776,13 @@ bool Scene_Berzerk::checkCollision(Entity& entity1, Entity& entity2) {
 }
 
 void Scene_Berzerk::onPlayerCollision() {
+
 	SoundPlayer::getInstance().play("death", m_player->getComponent<CTransform>().pos);
 	m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation("die"));
 	m_player->getComponent<CAnimation>().animation.play();
 
-	//// Deccrement life
-	//Assets::getInstance().decrementLife(1);
-
-	//// Decrement score
-	//Assets::getInstance().decrementScore(10);
+	// Deccrement life
+	Assets::getInstance().decrementLife(1);
 
 	for (auto& e : m_entityManager.getEntities("enemy"))
 	{
@@ -752,22 +790,7 @@ void Scene_Berzerk::onPlayerCollision() {
 	}
 
 	m_player->addComponent<CState>().state = "dead";
-
-	//updateLivesText();
-
-	//if (Assets::getInstance().getLife() == 0) {
-	//	m_player->addComponent<CState>().state = "dead";
-	//	MusicPlayer::getInstance().stop();
-	//	if (!m_player->getComponent<CAnimation>().animation.hasEnded()) {
-	//		onEnd();
-	//	}
-	//}
-	//else {
-	//	//respawnPlayer();
-	//	m_player->addComponent<CState>().state = "dead";
-	//}
 }
-
 
 void Scene_Berzerk::respawnPlayer() {
 
@@ -787,113 +810,34 @@ void Scene_Berzerk::respawnPlayer() {
 }
 
 void Scene_Berzerk::sUpdate(sf::Time dt) {
+
 	SoundPlayer::getInstance().removeStoppedSounds();
 	m_entityManager.update();
 
-	if (m_isPaused)
+	if (m_isPaused) 
 		return;
-
-	//updateScoreText(); // update score text
-	//updateLivesText();
 
 	sAnimation(dt);
 
 	if (m_player->hasComponent<CState>() && m_player->getComponent<CState>().state == "dead") {
 
 		if (m_player->getComponent<CAnimation>().animation.hasEnded()) {
+			if (Assets::getInstance().getLife() <= 0)
+				m_game->quitLevel();
+
 			respawnPlayer();
 			for (auto& e : m_entityManager.getEntities("enemy")) {
 				e->getComponent<CAnimation>().animation.play();
 			}			
 		}
-		return; 
+		return;
 	}
 
-	/// consertar isto
-
-	updateEnemyChase();
 	sMovement(dt);
 	adjustPlayerPosition();
 	checkPlayerState();
 	sCollisions();
 }
-
-void Scene_Berzerk::updateEnemyChase() {
-	auto playerPos = m_player->getComponent<CTransform>().pos;
-	auto& enemies = m_entityManager.getEntities("enemy");
-
-	for (auto& enemy : enemies) {
-		auto& enemyTransform = enemy->getComponent<CTransform>();
-		auto& enemyAnimation = enemy->getComponent<CAnimation>().animation;
-
-		sf::Vector2f currentVelocity = enemyTransform.vel;
-
-		float enemyChaseSpeed = sqrt(currentVelocity.x * currentVelocity.x + currentVelocity.y * currentVelocity.y) * 1.005f;
-
-		if (playerPos.y >= enemyTransform.pos.y - m_gridSize.y / 2 &&
-			playerPos.y <= enemyTransform.pos.y + m_gridSize.y / 2) {
-
-			sf::Vector2f direction = playerPos - enemyTransform.pos;
-			direction = normalize(direction);
-
-			enemyTransform.vel = direction * enemyChaseSpeed;
-
-			// Update enemy animation based on velocity direction
-			auto& animation = enemy->getComponent<CAnimation>().animation;
-			std::string animationName;
-
-			
-			if (direction.x > 0) {
-				animationName = "enemyRight";
-				// Play chase sound
-				//SoundPlayer::getInstance().play("enemyChase", m_player->getComponent<CTransform>().pos);
-			}
-			else {
-				animationName = "enemyLeft";
-				// Play chase sound
-				//SoundPlayer::getInstance().play("enemyChase", m_player->getComponent<CTransform>().pos);
-			}
-
-			if (animation.getName() != animationName)
-				animation = m_player->addComponent<CAnimation>(Assets::getInstance().getAnimation(animationName)).animation;
-			animation.play();
-		}
-	}
-}
-
-void Scene_Berzerk::updateScoreText() {
-	m_font = Assets::getInstance().getFont("Arcade");
-	m_scoreText.setString("Score  " + std::to_string(Assets::getInstance().getScore()));
-
-	// Setting the score text properties
-	m_scoreText.setPosition(20.f, 15.f);
-	m_scoreText.setFont(m_font);
-	m_scoreText.setCharacterSize(30);
-	m_scoreText.setFillColor(sf::Color::Green);
-}
-
-void Scene_Berzerk::updateLivesText() {
-	m_font = Assets::getInstance().getFont("Arcade");
-	m_livesText.setString("Lives  " + std::to_string(Assets::getInstance().getLife()));
-	// Setting the lives text properties
-	m_livesText.setPosition(320.f, 15.f);
-	m_livesText.setFont(m_font);
-	m_livesText.setCharacterSize(30);
-	m_livesText.setFillColor(sf::Color::Red);
-}
-
-// Message of winning
-void Scene_Berzerk::winningMessage() {
-	m_isPaused = true;
-
-	m_font = Assets::getInstance().getFont("Arcade");
-	m_endText.setString("You Win");
-	m_endText.setPosition(150.f, 300.f);
-	m_endText.setFont(m_font);
-	m_endText.setCharacterSize(50);
-	m_endText.setFillColor(sf::Color::Red);
-}
-
 
 void Scene_Berzerk::sAnimation(sf::Time dt) {
 
@@ -908,7 +852,6 @@ void Scene_Berzerk::sAnimation(sf::Time dt) {
 	}
 }
 
-
 void Scene_Berzerk::adjustPlayerPosition() {
 	auto& center = m_worldView.getCenter();
 	sf::Vector2f viewHalfSize = m_worldView.getSize() / 2.f;
@@ -920,6 +863,7 @@ void Scene_Berzerk::adjustPlayerPosition() {
 
 	auto& player_pos = m_player->getComponent<CTransform>().pos;
 	auto halfSize = sf::Vector2f{ 20, 20 };
+
 	// keep player in bounds
 	player_pos.x = std::max(player_pos.x, left + halfSize.x);
 	player_pos.x = std::min(player_pos.x, right - halfSize.x);
@@ -928,6 +872,7 @@ void Scene_Berzerk::adjustPlayerPosition() {
 }
 
 void Scene_Berzerk::checkPlayerState() {
+
 	auto& state = m_player->getComponent<CState>().state;
 	if (state == "dead" && m_player->getComponent<CAnimation>().animation.hasEnded()) {
 		respawnPlayer();
@@ -935,6 +880,7 @@ void Scene_Berzerk::checkPlayerState() {
 }
 
 void Scene_Berzerk::loadLevel(const std::string& path) {
+
 	std::ifstream config(path);
 	if (config.fail()) {
 		std::cerr << "Open file " << path << " failed\n";
@@ -982,6 +928,52 @@ void Scene_Berzerk::loadLevel(const std::string& path) {
 			if (collide == "yes") {
 				e->addComponent<CBoundingBox>(sf::Vector2f(40.f, 40.f));
 			}
+		}
+		else if (token == "Exit") {
+			sf::Vector2f pos;
+			sf::Vector2f size;
+			std::string nextLevel;
+			config >> pos.x >> pos.y >> size.x >> size.y >> nextLevel;
+
+			auto e = m_entityManager.addEntity("Exit");
+
+			pos.x += (size.x / 2.0f);
+			pos.y += (size.y / 2.0f);
+
+			e->addComponent<CTransform>(pos);
+			e->addComponent<CBoundingBox>(size);
+			e->addComponent<CString>(nextLevel);
+		}
+		else if (token == "Enemy")
+		{
+			sf::Vector2f pos;
+			sf::Vector2f vel;
+			float min, max;
+			std::string name;
+			config >> pos.x >> pos.y >> vel.x >> vel.y >> min >> max >> name;
+
+			// Set the center of the grid cell
+			float xCenter = pos.x * m_gridSize.x + m_gridSize.x / 2.0f;
+			float yCenter = m_game->window().getSize().y - (pos.y * m_gridSize.y + m_gridSize.y / 2.0f);
+
+			// Spawn the enemy
+			spawnEnemy(sf::Vector2f(xCenter, yCenter), vel, min, max, name);
+		}
+		else if (token == "Spear")
+		{
+			sf::Vector2f pos;
+			config >> pos.x >> pos.y;
+
+			// spawn dragonSpare
+			spawnDragonSpear(sf::Vector2f(pos.x * m_gridSize.x, (600 - pos.y * m_gridSize.y) - m_gridSize.y / 2));
+		}
+		else if (token == "PowerUp")
+		{
+			sf::Vector2f pos;
+			config >> pos.x >> pos.y;
+
+			// spawn power up (position 18, 2)
+			spawnPowerUp(sf::Vector2f(18 * m_gridSize.x, (600 - pos.y * m_gridSize.y) - m_gridSize.y / 2));
 		}
 		else if (token[0] == '#') {
 			std::string tmp;

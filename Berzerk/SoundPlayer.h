@@ -44,6 +44,4 @@ public:
     bool                isEmpty() const;
 };
 
-
-
 #endif //SFMLCLASS_SOUNDPLAYER_H
